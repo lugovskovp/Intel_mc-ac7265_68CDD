@@ -31,39 +31,15 @@
 
 ## Что есть в WL
 
-1. Дамп, сохраненный BIOS Backup ToolKit V2.0 или взятый из распакованной прошивки HP update BIOS 68CDD rev.F60, открыть в 010Editor. 
-2. В Диспетчере устройств сетевая карта VEN_14E4&DEV_4315&SUBSYS_1508103C. Найти <ctrl>+<F> последовательность байт E4141543.
-3. Явно прослеживаются повторяющиеся структуры. Выше найти надо, где они начинаются, у меня с 
+1. Cохраненный BIOS Backup ToolKit V2.0 или взятый из распакованной прошивки HP update BIOS 68CDD rev.F60, открыть в 010Editor. 
+2. В Диспетчере устройств сетевая карта id VEN_14E4&DEV_4315&SUBSYS_1508103C. Значит, надо найти <ctrl>+<F> последовательность байт E4141543.
+3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
+
+![0x22838c](/pix/2021-03-03_10-56-13.png)
 4. Создать новый темплейт с содержимым
 
 
-      // info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
-      LittleEndian();
-      // find  E4141543
-      FSeek(0x22838c);    
-      
-      
-      typedef struct{
-          WORD    ven_id <bgcolor=cAqua, format=hex>;
-          WORD    dev_id <bgcolor=cLtAqua, format=hex>;
-          DWORD   subsys   <bgcolor=cLtGreen, format=hex>;
-          WORD mb_rev;
-          wchar_t wl_eq[15] <bgcolor=cLtYellow, format=hex>;
-      }WL_WIFI<read=Read_WL_WIFI>;
-      string Read_WL_WIFI(WL_WIFI &a){
-          local string s;
-          SPrintf(s, "VEN_%04X&DEV_%04X&SUBSYS_%08X unk: %X; str:\"%s\"",
-          a.ven_id, a.dev_id, a.subsys,
-          a.mb_rev, a.wl_eq);
-          return s;
-      }
-
-
-      // as is extracted File_DXE_driver_5EE86B35-0839-4A21-8845-F1ACB0F688AB_WLAN.ffs
-
-
-      // my VEN_14E4&DEV_4315&SUBSYS_1508103C
-      WL_WIFI wifi[16]<optimize=false>;
+BIOS
 
 
 
