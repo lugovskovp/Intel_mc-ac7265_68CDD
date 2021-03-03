@@ -36,10 +36,65 @@
 3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
 
 ![0x22838c](/pix/2021-03-03_10-56-13.png)
-4. Создать новый темплейт с содержимым
+4. Создать новый темплейт с содержимым. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
+
+		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
+		LittleEndian();
+		// find  E4141543
+
+		FSeek(0x22838c);    
+
+		typedef struct{
+			WORD    ven_id <bgcolor=cAqua, format=hex>;
+			WORD    dev_id <bgcolor=cLtAqua, format=hex>;
+			DWORD   subsys   <bgcolor=cLtGreen, format=hex>;
+			WORD mb_rev;
+			wchar_t wl_eq[15] <bgcolor=cLtYellow, format=hex>;
+		}WL_WIFI<read=Read_WL_WIFI>;
+		string Read_WL_WIFI(WL_WIFI &a){
+			local string s;
+			SPrintf(s, "VEN_%04X&DEV_%04X&SUBSYS_%08X unk: %X; str:\"%s\"",
+			a.ven_id, a.dev_id, a.subsys,
+			a.mb_rev, a.wl_eq);
+			return s;
+		}
 
 
-BIOS
+		// my VEN_14E4&DEV_4315&SUBSYS_1508103C
+		WL_WIFI wifi[16]<optimize=false>;
+
+
+5. Структура WL_WIFI - эмпирическая, в частности, что означает значение **mb_rev** мне не понятно, может, ревизия? Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования.
+
+![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
+
+6. Поменяв формирование строки на 
+
+		SPrintf(s, "|VEN_%04X&DEV_%04X&SUBSYS_%08X | %X; |\"%s\"|",
+			a.ven_id, a.dev_id, a.subsys,
+			a.mb_rev, a.wl_eq);
+			
+и скопировав (right click - Copy column) колонку результатов Value получится почти MarkDown - таблица - к которой осталось только приделать шапку и распознать модели
+
+|Vendor&DeviceID&SubsysID| Unknown | String | Model| Notes|
+|------					|------		|-----	|-----	|-----|
+|VEN_8086&DEV_4239&SUBSYS_13118086 | B |"PD9622ANHU"| | |
+|VEN_8086&DEV_4239&SUBSYS_13168086 | B |"  "| | |
+|VEN_8086&DEV_422C&SUBSYS_13018086 | B |"  "| | |
+|VEN_8086&DEV_422C&SUBSYS_13068086 | B |"  "| | |
+|VEN_8086&DEV_4238&SUBSYS_11118086 | B |"PD9633ANHU"| | |
+|VEN_8086&DEV_422B&SUBSYS_11018086 | B |"  "| | |
+|VEN_14E4&DEV_4315&SUBSYS_1507103C | A |"QDS-BRCM1030"| | |
+|VEN_14E4&DEV_4315&SUBSYS_1508103C | A |"  "| | |
+|VEN_14E4&DEV_432B&SUBSYS_1509103C | F |"QDS-BRCM1031"| | |
+|VEN_14E4&DEV_432B&SUBSYS_1510103C | F |"  "| | |
+|VEN_14E4&DEV_4353&SUBSYS_1509103C | A |"QDS-BRCM1041"| | |
+|VEN_14E4&DEV_4353&SUBSYS_1510103C | A |"  "| | |
+|VEN_8086&DEV_0083&SUBSYS_13058086 | B |"  "| | |
+|VEN_8086&DEV_0084&SUBSYS_13158086 | A |"PD9112BNHU"| | |
+|VEN_8086&DEV_0083&SUBSYS_13068086 | B |"  "| | |
+|VEN_8086&DEV_0084&SUBSYS_13168086 | B |"  "| | |
+
 
 
 
