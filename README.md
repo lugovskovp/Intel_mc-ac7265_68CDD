@@ -1,12 +1,10 @@
 # HP ProBook 6540b Whitelist WiFi BIOS 68CDD v0F.60 11/13/2015
 
-Отличный ноутбук, с 2008 года и по сейчас полностью устраивает. За исключением того, что родной WiFi **Broadcom 802.11g Network Adapter
-*, [не более 2 Мбит](https://forum.ixbt.com/topic.cgi?id=14:52775-15). **PCI\VEN_14E4&DEV_4315&SUBSYS_1508103C&REV_01\000000FFFF00FFFF00
-**
+Отличный ноутбук, работаю на нем с 2008 года. Core i5, SSD, RAM 8GB, COM port, bluetooth, да еще и родная dock-станция к н нему. И по сейчас полностью устраивает. За исключением того, что родной WiFi **Broadcom 802.11g Network Adapter**, [не более 2 Мбит](https://forum.ixbt.com/topic.cgi?id=14:52775-15). **PCI\VEN_14E4&DEV_4315&SUBSYS_1508103C&REV_01\000000FFFF00FFFF00**
 
 # Предыстория
 
-В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и на просторах сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, ut to 867 Mbps
+В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и в сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, ut to 867 Mbps. Модуль пришел, установленный в ASUS нотник показал полную работоспособность и соответствие заявленным характеристикам.
 
 А вот упс. Не найдено успешных примеров прошивок модифицированных BIOS HP 68CDD - ProoBook 6440b, 6550b, 6540b.
 - [1. Поиск 68CDD по www.bios-mods.com](https://www.bios-mods.com/search/?cx=partner-pub-9226021234789650%3A6147460733&cof=FORID%3A10&ie=UTF-8&q=68CDD&sa=Search&siteurl=www.bios-mods.com%2Fforum%2FForum-WiFi-WWAN-Whitelist-Removal&ref=www.bios-mods.com%2Fforum%2Farchive%2Findex.php%3Fforum-143.html&ss=172j29584j2)
@@ -16,12 +14,14 @@
 
 В п.1. [вторая ссылка](https://www.bios-mods.com/forum/Thread-request-HP-ProBook-6440b-whitelist?page=3) - _вроде как_ об успешном опыте - НО с версией BIOS F.50, у меня же последняя - F.60. И к последнему варианту BIOS автор [запретил доступ](https://rghost.net/8yyrTg5xl). Впрочем, в любом случае там автор модификации использовал слитую прошивку с DMI. Важная информация - кроме NoWhiteListMod, автор **replaced all RSA checking Module**, запомним.
  
+Остается вариант самому как-то разбираться с этой темой.
+
 
 # SW
 
-- [HP update BIOS 68CDD rev.F60 - latest and newest](https://ftp.hp.com/pub/softpaq/sp73501-74000/sp73934.exe)
-- BIOS Backup ToolKit V2.0
-- [Newest UEFITool A58 win32](https://github.com/LongSoft/UEFITool/releases/tag/A58)
+- [HP update BIOS 68CDD rev.F60 - latest and newest](https://ftp.hp.com/pub/softpaq/sp73501-74000/sp73934.exe) - последняя официальная прошивка, уже установлена.
+- BIOS Backup ToolKit V2.0 - вроде как (?) сохраняет без SPIпрограмматора содержимое BIOS
+- [Newest UEFITool A58 win32](https://github.com/LongSoft/UEFITool/releases/tag/A58) 
 - rufus-3.13p
 - [010 Editor](https://www.sweetscape.com/010editor/) как продвинутый hex-редактор
 - HxD - как простой hex-редактор
@@ -36,7 +36,7 @@
 3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
 
 ![0x22838c](/pix/2021-03-03_10-56-13.png)
-4. Создать новый темплейт с содержимым. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
+4. Создать новый темплейт (на предыдущем скриншоте он уже есть) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
 
 		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
 		LittleEndian();
@@ -64,36 +64,39 @@
 		WL_WIFI wifi[16]<optimize=false>;
 
 
-5. Структура WL_WIFI - эмпирическая, в частности, что означает значение **mb_rev** мне не понятно, может, ревизия? Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования.
+5. Структура WL_WIFI - эмпирическая, слепленная мной "на глаз", значение **mb_rev** мне не понятно, (может, ревизия)? Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования.
 
 ![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
 
 6. Поменяв формирование строки на 
 
-		SPrintf(s, "|VEN_%04X&DEV_%04X&SUBSYS_%08X | %X; |\"%s\"|",
+		SPrintf(s, "| [PCI\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI\%5CVEN_%04X\%26DEV_%04X) | %X |\"%s\"| []() | |",
 			a.ven_id, a.dev_id, a.subsys,
+			a.ven_id, a.dev_id,
 			a.mb_rev, a.wl_eq);
 			
-и скопировав (right click - Copy column) колонку результатов Value получится почти MarkDown - таблица - к которой осталось только приделать шапку и распознать модели
+и скопировав (right click - Copy column) колонку результатов Value  почти получится MarkDown - таблица - к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
 
 |Vendor&DeviceID&SubsysID| Unknown | String | Model| Notes|
 |------					|------		|-----	|-----	|-----|
-|VEN_8086&DEV_4239&SUBSYS_13118086 | B |"PD9622ANHU"| | |
-|VEN_8086&DEV_4239&SUBSYS_13168086 | B |"  "| | |
-|VEN_8086&DEV_422C&SUBSYS_13018086 | B |"  "| | |
-|VEN_8086&DEV_422C&SUBSYS_13068086 | B |"  "| | |
-|VEN_8086&DEV_4238&SUBSYS_11118086 | B |"PD9633ANHU"| | |
-|VEN_8086&DEV_422B&SUBSYS_11018086 | B |"  "| | |
-|VEN_14E4&DEV_4315&SUBSYS_1507103C | A |"QDS-BRCM1030"| | |
-|VEN_14E4&DEV_4315&SUBSYS_1508103C | A |"  "| | |
-|VEN_14E4&DEV_432B&SUBSYS_1509103C | F |"QDS-BRCM1031"| | |
-|VEN_14E4&DEV_432B&SUBSYS_1510103C | F |"  "| | |
-|VEN_14E4&DEV_4353&SUBSYS_1509103C | A |"QDS-BRCM1041"| | |
-|VEN_14E4&DEV_4353&SUBSYS_1510103C | A |"  "| | |
-|VEN_8086&DEV_0083&SUBSYS_13058086 | B |"  "| | |
-|VEN_8086&DEV_0084&SUBSYS_13158086 | A |"PD9112BNHU"| | |
-|VEN_8086&DEV_0083&SUBSYS_13068086 | B |"  "| | |
-|VEN_8086&DEV_0084&SUBSYS_13168086 | B |"  "| | |
+| [PCIEN_8086&DEV_4239&SUBSYS_13118086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"PD9622ANHU"| [Centrino Advanced-N 6200 2x2 AGN]() | |
+| [PCIEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"  "| []() | |
+| [PCIEN_8086&DEV_422C&SUBSYS_13018086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) | B |"  "| []() | |
+| [PCIEN_8086&DEV_422C&SUBSYS_13068086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) | B |"  "| []() | |
+| [PCIEN_8086&DEV_4238&SUBSYS_11118086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) | B |"PD9633ANHU"| []() | |
+| [PCIEN_8086&DEV_422B&SUBSYS_11018086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) | B |"  "| []() | |
+| [PCIEN_14E4&DEV_4315&SUBSYS_1507103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) | A |"QDS-BRCM1030"| []() | |
+| [PCIEN_14E4&DEV_4315&SUBSYS_1508103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) | A |"  "| []() | |
+| [PCIEN_14E4&DEV_432B&SUBSYS_1509103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) | F |"QDS-BRCM1031"| []() | |
+| [PCIEN_14E4&DEV_432B&SUBSYS_1510103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) | F |"  "| []() | |
+| [PCIEN_14E4&DEV_4353&SUBSYS_1509103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) | A |"QDS-BRCM1041"| []() | |
+| [PCIEN_14E4&DEV_4353&SUBSYS_1510103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) | A |"  "| []() | |
+| [PCIEN_8086&DEV_0083&SUBSYS_13058086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) | B |"  "| []() | |
+| [PCIEN_8086&DEV_0084&SUBSYS_13158086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) | A |"PD9112BNHU"| []() | |
+| [PCIEN_8086&DEV_0083&SUBSYS_13068086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) | B |"  "| []() | |
+| [PCIEN_8086&DEV_0084&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) | B |"  "| []() | |
+
+
 
 
 
