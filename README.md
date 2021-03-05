@@ -1,10 +1,10 @@
 # HP ProBook 6540b Whitelist WiFi BIOS 68CDD v0F.60 11/13/2015
 
-Отличный ноутбук, работаю на нем с 2008 года. Core i5, SSD, RAM 8GB, COM port, bluetooth, да еще и родная dock-станция к н нему. И по сейчас полностью устраивает. За исключением того, что родной WiFi **Broadcom 802.11g Network Adapter**, обеспечивает скорость в DL от роутера максимум 2.9 Мбайс/с, что грустно. Интернет говорит, что [адаптер умеет не более 2 Мбайт](https://forum.ixbt.com/topic.cgi?id=14:52775-15). 
+[Отличный ноутбук](https://h10057.www1.hp.com/ecomcat/hpcatalog/specs/provisioner/05/WD689EA.htm), работаю на нем с 2008 года. Великолепная матрица дисплея, Mobile Intel® HM57 Express, Core i5, SSD, RAM 8GB, COM port, bluetooth, да еще и родная dock-станция к нему. И сейчас полностью устраивает. За исключением того, что родной WiFi **Broadcom 802.11g Network Adapter**, обеспечивает скорость в DL от роутера максимум 2.9 Мбайт/с, что грустно. Интернет говорит, что [адаптер умеет не более 2 Мбайт](https://forum.ixbt.com/topic.cgi?id=14:52775-15). 
 
 **PCI\VEN_14E4&DEV_4315&SUBSYS_1508103C&REV_01\000000FFFF00FFFF00**
 
-# Предыстория
+## Предыстория
 
 В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и в сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, ut to 867 Mbps. Модуль пришел, установленный в ASUS нотник показал полную работоспособность и соответствие заявленным характеристикам.
 
@@ -14,106 +14,22 @@
 - [Устанавливаем неподдерживаемую Wifi карту в HP Pavilion dv6-1319er](https://habr.com/ru/post/108820/)
 - [Сказ о том, как я ставил неподдерживаемую Wimax/Wifi карту в Lenovo X201](https://habr.com/ru/post/107598/)
 
-В п.1. [вторая ссылка](https://www.bios-mods.com/forum/Thread-request-HP-ProBook-6440b-whitelist?page=3) - _вроде как_ об успешном опыте - НО с версией BIOS F.50, у меня же последняя - F.60. И к последнему варианту BIOS автор [запретил доступ](https://rghost.net/8yyrTg5xl). Впрочем, в любом случае там автор модификации использовал слитую прошивку с DMI. Важная информация - кроме NoWhiteListMod, автор **replaced all RSA checking Module**, запомним.
+В п.1. [вторая ссылка](https://www.bios-mods.com/forum/Thread-request-HP-ProBook-6440b-whitelist?page=3) - _вроде как_ об успешном опыте - НО с ранней версией BIOS F.50, у меня же последняя - F.60. И к последнему варианту BIOS автор [запретил доступ](https://rghost.net/8yyrTg5xl). Впрочем, в любом случае там автор модификации использовал слитую прошивку с DMI. Важная информация - кроме NoWhiteListMod, автор **replace all RSA checking Module**, запомним.
  
 Остается вариант самому как-то разбираться с этой темой.
 
+## Что делать.
 
-# SW
+Для начала [посмотреть, что за WiFi оборудование в белом списке](whitelist_equipment.md)
 
-- [HP update BIOS 68CDD rev.F60 - latest and newest](https://ftp.hp.com/pub/softpaq/sp73501-74000/sp73934.exe) - последняя официальная прошивка, уже установлена.
-- BIOS Backup ToolKit V2.0 - вроде как (?) сохраняет без SPIпрограмматора содержимое BIOS
-- [Newest UEFITool A58 win32](https://github.com/LongSoft/UEFITool/releases/tag/A58) 
-- rufus-3.13p
-- [010 Editor](https://www.sweetscape.com/010editor/) как продвинутый hex-редактор
-- HxD - как простой hex-редактор
+HP ProBook 6540b имеет возможность серфинга и просмотра электронной почты без загрузки основной ОС.  QuickWeb и  QuickLook. То есть в прошивке есть драйвера для WiFi карт из whitelist. Можно быть уверенным, для иной карты эта функциональность работать не будет, и, возможно, при включении её в BIOS вообще окирпичится. 
 
 
-# Road
-
-## Что есть в WL
-
-Для начала неплохо бы составить список - а что вообще входит в белый лист.
-
-1. Cохраненный BIOS Backup ToolKit V2.0 или взятый из распакованной прошивки HP update BIOS 68CDD rev.F60, открыть в 010Editor. 
-2. В Диспетчере устройств сетевая карта id VEN_14E4&DEV_4315&SUBSYS_1508103C. Значит, надо найти <ctrl>+<F> последовательность байт E4141543.
-3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
-
-![0x22838c](/pix/2021-03-03_10-56-13.png)
-4. Создать новый темплейт (на предыдущем скриншоте он уже есть) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
-
-		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
-		LittleEndian();
-		// find  E4141543
-
-		FSeek(0x22838c);    
-
-		typedef struct{
-			WORD    ven_id <bgcolor=cAqua, format=hex>;
-			WORD    dev_id <bgcolor=cLtAqua, format=hex>;
-			DWORD   subsys   <bgcolor=cLtGreen, format=hex>;
-			WORD mb_rev;
-			wchar_t FCCID[15] <bgcolor=cLtYellow, format=hex>;
-		}WL_WIFI<read=Read_WL_WIFI>;
-		string Read_WL_WIFI(WL_WIFI &a){
-			local string s;
-		SPrintf(s, "| [PCI\\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI%%5CVEN_%04X%%26DEV_%04X) | %X |\"%s\"| []() | |",
-			a.ven_id, a.dev_id, a.subsys,
-			a.ven_id, a.dev_id,
-			a.mb_rev, a.FCCID);
-			return s;
-		}
-
-
-		// my VEN_14E4&DEV_4315&SUBSYS_1508103C
-		WL_WIFI wifi[16];
-
-
-5. Структура WL_WIFI - эмпирическая, слепленная мной "на глаз", значение **mb_rev** мне не понятно, (может, ревизия)? Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования. Да, на скрине - предварительная, старая версия темплейта, новая **whitelist_equipment.bt ** в корне репозитория.
-
-![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
-
-6. Там изменено формирование строки структуры 
-
-		[PCI\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI\%5CVEN_%04X\%26DEV_%04X) | %X |\"%s\"| []() | |"
-			
-Чтобы скопировав (right click - Copy column) колонку результатов Value  получлась почти MarkDown - таблица - к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
-
-|VendorID&DeviceID&SubsysID|Unk| String |FCCID|Notes|802.11|
-|------					|------|-----	|-----|-----|-------|
-| [PCI\VEN_8086&DEV_4239&SUBSYS_13118086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"PD9622ANHU"| [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) | | gn|
-| [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"  "| [Centrino Advanced-N 6200 2x2 ABG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) | | bg|
-| [PCI\VEN_8086&DEV_422C&SUBSYS_13018086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) | B |"  "| [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW))  | | gn|
-| [PCI\VEN_8086&DEV_422C&SUBSYS_13068086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) | B |"  "| [Centrino Advanced-N 6200 2x2 ABG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW))  | | bg|
-| [PCI\VEN_8086&DEV_4238&SUBSYS_11118086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) | B |"PD9633ANHU"| [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) | | gn|
-| [PCI\VEN_8086&DEV_422B&SUBSYS_11018086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) | B |"  "| [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) | |gn |
-| [PCI\VEN_14E4&DEV_4315&SUBSYS_1507103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) | A |"QDS-BRCM1030"| [U98Z049.00 Wireless Mini PCIe Card](http://en.techinfodepot.shoutwiki.com/wiki/Foxconn_U98Z049.00_(HP)) | [На Broadcom BCM4312 и Dell и Lite-On делали карты с таким FCCID](http://en.techinfodepot.shoutwiki.com/w/index.php?title=Special%3ASearch&search=QDS-BRCM1030&fulltext=1) |bg|
-| [PCI\VEN_14E4&DEV_4315&SUBSYS_1508103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) | A |"  "| []() | Моя карта. А на сайте DEV_4315 вообще нет. BCM4312 802.11b/g LP-PHY, SUBSYS не найден, subvendor HP, на BCM4312 | g|
-| [PCI\VEN_14E4&DEV_432B&SUBSYS_1509103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) | F |"QDS-BRCM1031"| [Foxconn U98Z051.00 (HP)](http://en.techinfodepot.shoutwiki.com/wiki/Foxconn_U98Z051.00_(HP)) | BCM4322 802.11a/b/ g/n Wireless LAN Controller, SUBSYS не найден, производство HP|bgn?|
-| [PCI\VEN_14E4&DEV_432B&SUBSYS_1510103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) | F |"  "| []() |BCM4322 802.11a/b/ g/n Wireless LAN Controller,  SUBSYS не найден | |
-| [PCI\VEN_14E4&DEV_4353&SUBSYS_1509103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) | A |"QDS-BRCM1041"| [WMIB-275N Half-size Mini PCIe Card](http://en.techinfodepot.shoutwiki.com/wiki/Gemtek_WMIB-275N_(HP)) | |bgn? | 
-| [PCI\VEN_14E4&DEV_4353&SUBSYS_1510103C](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) | A |"  "| []() | BCM43224 802.11a/b/g/n,  SUBSYS не найден | |
-| [PCI\VEN_8086&DEV_0083&SUBSYS_13058086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) | B |"  "| [Centrino Wireless-N 1000 BGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) | bgn|
-| [PCI\VEN_8086&DEV_0084&SUBSYS_13158086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) | A |"PD9112BNHU"| [Centrino Wireless-N 1000 BGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) | | bgn|
-| [PCI\VEN_8086&DEV_0083&SUBSYS_13068086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) | B |"  "| [Centrino Wireless-N 1000 BG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) | | bg|
-| [PCI\VEN_8086&DEV_0084&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) | B |"  "| [Centrino Wireless-N 1000 BG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) | |bg |
-
-VENDORs: 
-- 8086 : Intel
-- 14e4 : Broadcom Corporation
-
-SUBVENDORs: 
-- 103c : Hewlett Packard
-- 8086 : Intel
-- 14e4 : Broadcom Corporation
-
-Итоги: Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
-
-А [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) всё же еще интереснее.
-
-
+donovan6000:Damaged Uvula
+https://web.archive.org/web/20160426152947/http://donovan6000.blogspot.com:80/2015/01/damaged-uvula.html
 ##
 
+FfsParser::parseRawArea: volume size stored in header 8000h differs from calculated using block map 10000h
 
 
 ##
