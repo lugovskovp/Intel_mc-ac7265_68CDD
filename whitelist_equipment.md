@@ -1,4 +1,4 @@
-# WiFi whitelist
+# Original WiFi Whitelist
 
 Для начала неплохо бы составить список - а что вообще входит в белый лист.
 
