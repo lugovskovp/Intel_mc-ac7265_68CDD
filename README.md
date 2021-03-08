@@ -8,7 +8,8 @@
 
 В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и в сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, ut to 867 Mbps. Модуль пришел, установленный в ASUS нотник показал полную работоспособность и соответствие заявленным характеристикам.
 
-А вот упс. Не найдено успешных примеров прошивок модифицированных BIOS HP 68CDD - ProoBook 6440b, 6550b, 6540b.
+А вот упс.
+Не найдено успешных примеров прошивок модифицированных BIOS HP 68CDD - ProoBook 6440b, 6550b, 6540b.
 - [1. Поиск 68CDD по www.bios-mods.com](https://www.bios-mods.com/search/?cx=partner-pub-9226021234789650%3A6147460733&cof=FORID%3A10&ie=UTF-8&q=68CDD&sa=Search&siteurl=www.bios-mods.com%2Fforum%2FForum-WiFi-WWAN-Whitelist-Removal&ref=www.bios-mods.com%2Fforum%2Farchive%2Findex.php%3Fforum-143.html&ss=172j29584j2)
 - []()
 - [Устанавливаем неподдерживаемую Wifi карту в HP Pavilion dv6-1319er](https://habr.com/ru/post/108820/)
