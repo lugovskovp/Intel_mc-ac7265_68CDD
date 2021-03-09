@@ -1,0 +1,11 @@
+# start from 7af8 value  8680394286801613 changed 86805A09 86801090 
+# found as "8680394286801613" in 233DF097-3218-47B2-9E09-FE58C2B20D22/PE32 image section at body-offset 30A8h
+30a8: 86 86
+30a9: 80 80
+30aa: 39 5a
+30ab: 42 09
+30ac: 86 86
+30ad: 80 80
+30ae: 16 10
+30af: 13 90
+
