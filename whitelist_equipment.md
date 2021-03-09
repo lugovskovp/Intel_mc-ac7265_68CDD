@@ -5,10 +5,7 @@
 
 ## Used SW
 
-- [HP update BIOS 68CDD rev.F60 - latest and newest](https://ftp.hp.com/pub/softpaq/sp73501-74000/sp73934.exe) - последняя официальная прошивка, уже установлена.
-- BIOS Backup ToolKit V2.0 - вроде как (?) сохраняет без SPIпрограмматора содержимое BIOS
-- [Newest UEFITool A58 win32](https://github.com/LongSoft/UEFITool/releases/tag/A58) 
-- rufus-3.13p
+- [HP update BIOS 68CDD rev.F60 - latest and newest](https://ftp.hp.com/pub/softpaq/sp73501-74000/sp73934.exe) - последняя официальная прошивка, уже прошита ранее.
 - [010 Editor](https://www.sweetscape.com/010editor/) как продвинутый hex-редактор
 - [HxD](https://mh-nexus.de/en/hxd/) - как простой hex-редактор
 
