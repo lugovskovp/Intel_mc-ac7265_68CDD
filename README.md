@@ -42,3 +42,17 @@ FfsParser::parseRawArea: volume size stored in header 8000h differs from calcula
 
 
 ##
+ВНИМАНИЕ!
+Любая перепрошивка БИОСа на программаторе должна начинаться с сохранения оригинального содержимого флэшек в файлы бэкапов
+
+https://ascnb1.ru/forma1/viewtopic.php?f=387&t=96778&start=0
+
+
+
+
+
+
+
+
+
+
