@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[submodule]
+	active = .
+[remote "origin"]
+	url = https://github.com/dword1511/stm32-vserprog.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[submodule "flashrom"]
+	url = https://www.flashrom.org/git/flashrom.git
+[submodule "libopencm3"]
+	url = https://github.com/libopencm3/libopencm3.git
