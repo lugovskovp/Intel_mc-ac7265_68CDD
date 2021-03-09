@@ -51,8 +51,27 @@ https://ascnb1.ru/forma1/viewtopic.php?f=387&t=96778&start=0
 
 
 
+- [Устанавливаем неподдерживаемую Wifi карту в HP Pavilion dv6-1319er](https://habr.com/ru/post/108820/)
+- [ REQUEST HP 6735s F.21 BIOS Whitelist Removal - sp58130](https://www.bios-mods.com/forum/Thread-REQUEST-HP-6735s-F-21-BIOS-Whitelist-Removal-sp58130?page=2)
+- [http://xdel.ru/downloads/bios-mods.com-tools/](http://xdel.ru/downloads/bios-mods.com-tools/)
+- [How to Reset BIOS Password on a HP Laptop (Probook, Elitebook or Pavilion)](https://www.repairwin.com/how-to-reset-bios-password-hp-probook-elitebook-pavilion-laptop/#method-3)
+- [Искусство перешивки BIOS](http://www.rom.by/Iskusstvo_pereshivki_BIOS)
+- [ request HP ProBook 6440b whitelist](https://www.bios-mods.com/forum/Thread-request-HP-ProBook-6440b-whitelist?page=3)
+
+- [Правильный запрос биосов НР, методы их распаковки из апдейта](https://ascnb1.ru/forma1/viewtopic.php?f=387&t=96778)
+- []()
+- []()
 
 
 
 
 
+
+1- Extract spYourBios.exe, then extract XXXXXX.exe
+2- Open XXXXXX.bin(same name like XXXXXX.exe) with Andy's tool
+3- Once decompress, select "other" in manufacturer
+4- At advanced choose: 'no SLIC' and 'Allow user to modify other modules' press done
+5- Press GO and wait until the tool pauses and show popup(don't press OK yet).
+6- In DUMP folder, edit the module E62F9F2F-4895-4AB5-8F1A-399D0D9C6B90_2_776.ROM, search the hexadecimal string 86 80 2C 42 86 80 06 13 and replace 06 by 01(this is difference between ID 5100 and 6200, just a single digit),save the modification.
+7- Press OK on Andy's tool popup
+The Andy's tool will notice about changes that were made and will reintegrate the module.
