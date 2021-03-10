@@ -176,9 +176,16 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 В HxD:
 
-![jnz     short loc_10000FB2](2021-03-10_18-01-51.png)
+![jnz     short loc_10000FB2](/pix/2021-03-10_18-01-51.png)
 
 Создаю 
+
+
+В самой флешке НЕ хранится "запасной" копии BIOS, о которой Николай Шлей упоминает в конце своей статьи, а вот в файле BIOS с сайта hp.com - она есть. Слева - дамп, справа - вытащенный из SoftPack BIOS.
+
+![BIOSes](/pix/2021-03-10_20-07-02.png)
+
+
 
 
  загружаю в PhoenixTool v.2.66.
