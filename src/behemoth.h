@@ -21851,7 +21851,6 @@ typedef struct _EFI_PEI_SERVICES {
   EFI_PEI_REGISTER_FOR_SHADOW     RegisterForShadow;
 } EFI_PEI_SERVICES;
 
-typedef struct _EFI_PEI_SERVICES EFI_PEI_SERVICES ;
 //
 // JB: Some PEI structures
 //
