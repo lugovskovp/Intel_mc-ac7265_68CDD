@@ -18,11 +18,11 @@
 
 ## Микросхема flash с BIOS
 
-Клавиатура крепится на трех винтах с нижней части корпуса нотника. Под ней - Микросхема flash **MX25L3205D**.
+Клавиатура крепится на трех винтах с нижней части корпуса нотника. Под ней - на фото ниже батарейки CR2032 - микросхема SPI flash **MX25L3205D**.
 
 ![Микросхема flash **MX25L3205D**](pix/IMG_20210305_081229.jpg)
 
-В репозитории лежит [datasheet](/doc/MX25L3205D%2C%203V%2C%2032Mb%2C%20v1.5.pdf) на эту микросхему, Macronix	MX25L3205D, SPI-flash, Voltage 2.700-3.600 V, 32 Mbit aka 4096kB. В [списке поддерживаемых flashrom](https://www.flashrom.org/Supported_hardware) она присутствует.
+В репозиторий [положил datasheet](/doc/MX25L3205D%2C%203V%2C%2032Mb%2C%20v1.5.pdf) на эту микросхему, Macronix	MX25L3205D, SPI-flash, Voltage 2.700-3.600 V, 32 Mbit aka 4096kB. В [списке поддерживаемых flashrom](https://www.flashrom.org/Supported_hardware) она присутствует.
 
 
 ## SPI-программатор vserprog	
@@ -30,19 +30,20 @@
 Ждать CH-314 c алиэкспресса - долго. Если найдется в закромах BluePill STM32F103C8T6, то, считай железная часть уже есть, FW программатора [stm32-vseprog](https://github.com/dword1511/stm32-vserprog) может быть откомпилировано с целевой платформой BluePill. Выпаивать чип для программирования, или припаиваться к ножкам - не хотелось, а клипса-прищепка для внутрисхемного программирования SOIC-8 [стоит в марте-2021](https://roboshop.spb.ru/tools/sop-8-clips) всего 250р. Лучше, конечно, было бы взять за 330р её же уже [с кабелем и переходником](https://roboshop.spb.ru/tools/sop-8-clips-cabel), если бы была в наличии. 
 
 
-Немножко падеде танцев с бубном, не прописанных в его документации.
+Немножко падеде танцев с бубном. Проект - под Linux. Нотник с Linux Mint, с которого я собирался читать-писать SPI flash, уже в наличии был. Вероятно, как то завести программатор под виндой возможно - сам не пробовал, но, может кому-то пригодятся уже откомпилированные бинарники FW stm32-vseprog в репозитории они в папке */bin.prebuild.stm32vseprog* 
 
-Для прошивки BluePill нужен USB-TTL адаптер, у меня он на Prolific PL2303.
+Для прошивки BluePill нужен будет USB-TTL адаптер, у меня он на Prolific PL2303.
 
 		$> lsusb
 		...
 		Bus 002 Device 013: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
 		...
 		
-1. Install libpci headers
+1. Install libpci headers, stm32flash и gcc-arm-none-eabi, если ранее не установлены были.
 
 		$> apt search libpci
 		$> apt install libpci-dev
+		$> sudo apt-get install stm32flash gcc-arm-none-eabi
 	   
 2. Клонирую репозиторий проекта vseprog и собираю его под BluePill.
 
@@ -51,10 +52,11 @@
 		$> cd stm32-vserprog
 		$> make BOARD=stm32-bluepill
 
-3. Add "**-b 115200 -m 8e1**" in stm32-vseprog/Makefile in goal :
+3. На скорости по-умолчанию прошить у меня не получилось, может, особенность конкретного USB-TTL адаптера. Add "**-b 115200 -m 8e1**" in **stm32-vseprog/Makefile** file in goal :
 
 		flash-uart: $(HEX)
 			stm32flash -b 115200 -m 8e1 -w $< -v $(SERIAL)
+
 
 4. BluePill: set BOOT0 jumper to 1. Присоединяю USB-TTL адаптер к BluePill: 
 - +3.3v --- +3.3v
@@ -62,7 +64,9 @@
 - TX	--- A10 (31)
 - RX	--- A9 (30)
 
-5. Запуск прошивки программатора - под sudo. Instead
+Напутать на этом шаге можно только куда Tx и куда Rx.
+
+5. Запуск прошивки программатора - под sudo. Вместо прописанного в документации
 
           $> make BOARD=stm32-bluepill flash-uart
     must run as
@@ -90,7 +94,7 @@
 ![В сборе 1.](/pix/IMG_20210308_194425.jpg)
 ![В сборе 2.](/pix/IMG_20210308_194627.jpg) 
 
-8. На всякий случай в репозитории в *bin.prebuild.stm32vseprog* - полученные бинарники FW stm32-vseprog/Makefile
+8. На всякий случай в репозитории в */bin.prebuild.stm32vseprog* - полученные бинарники FW stm32-vseprog/Makefile
 
 
 ## Получение дампа прошивки.
