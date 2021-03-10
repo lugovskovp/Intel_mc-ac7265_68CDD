@@ -80,7 +80,8 @@
 
 В командной строке **dir /b File_\*>patch_list.cmd**. 
 
-### Замена ID в модулях.
+
+### Замена ID WiFi в модулях.
 
 Оборудование PCI\VEN_8086&DEV_4239&SUBSYS_13168086 (LittleEndian строка 8680394286801613) заменяю на новые значения - PCI\VEN_8086&DEV_095A&SUBSYS_90108086, т.е. на 86805A0986801090 по смещениям из результатов поиска.
 
@@ -119,23 +120,70 @@ parseVolume: non-UEFI data found in volume's free space
 parseVolume: unknown file system FFF12B8D-7696-4C8B-A985-2747075B4F50
 parseBios: volume size stored in header 8000h differs from calculated using block map 65536h
 
-**unknown file system FFF12B8D-** - NVRAM
-**non-UEFI data found in volume's free space** - это RSA подпись, проверяемая BIOSом при загрузке.
+**unknown file system FFF12B8D-** - в старом парсере - область NVRAM
 
-48000: HP BB BFR OKU
-Blood Flow Restriction, Big Ffff...flying Rocket, Brominated Flame Retardants, 
+**volume size stored in header 8000h differs from calculated using block map** - это, похоже, какое-то своё, глубоко личное, прочтение стандарта инженерами Hewlett Packard. Как и **FPT partition table header checksum is invalid**
+
+**non-UEFI data found in volume's free space** - это RSA подпись, проверяемая BIOSом при загрузке, о назначении которой в BIOSах HP [Николай Шлей aka CodeRush](https://habr.com/ru/users/CodeRush/) подробнейше рассказывал в своей статье[Простые приемы реверс-инжиниринга UEFI PEI-модулей на полезном примере](https://habr.com/ru/post/249655/).
+
+
+## Dirty hack RSA checking.
+
+Собственно его статья [Простые приемы реверс-инжиниринга UEFI PEI-модулей на полезном примере](https://habr.com/ru/post/249655/) определяет этот раздел. Посему читать прежде всего его, тут только те моменты, которые отличаются.
+
+### Делай раз!
+
+Сообщение парсера **FfsParser::parseVolumeNonUefiData: non-UEFI data found in volume's free space** приводит к информации в области паддинга, которая вообще то ожидается заполненной FF.
+![RSA? checksum - flag vs BIOS editing](/pix/2021-03-10_15-32-14.png)
+
+В конце строка **"SIG0F 6068CDD"**, версия BIOS, напомню, *F.60*, платформа BIOS *68CDD*.
+
+
+### Делай два!
+
+Как видно на скриншоте, смещение внутри тома не 12FEE0h, как в статье, а 14FEE0h. Поэтому ищу E0FE14h.
+
+		Hex pattern "E0FE14" found as "E0FE14" in Compressed section/PE32 image section at body-offset 10D2h
+		Hex pattern "E0FE14" found as "E0FE14" in Compressed section/PE32 image section at body-offset 10F7h
+
+Оба вхождения - в PE32 image section модуля с названием **SecureUpdating**, GUID которого полностью совпадает с описанным в статье.
+Сохраняю и весь модуль как **File_PEI_module_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating.ffs** и запакованное тело PE32 **Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body**.
+
+
+### Делай три!
+
+Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в файле они есть.
+
+![EFI_PEI_SERVICES](/pix/2021-03-10_16-11-53.png)
+
+Ок, в IDA-view A переименовываю **fdwReason** в **PeiServices**. Сходство с описанным в статье просто поразительное.
+
+Сохранение PeiServices на стеке.
+
+![2021-03-10_16-24-27.png](/pix/2021-03-10_16-24-27.png)
+
+Внутри следующей переименовываю **arg_0** в **PeiServices**
+
+
+"11h в данном случае — это BOOT_ON_S3_RESUME, т.е. если система просыпается из ACPI Sleep Mode" (c)
+
+И место, где проверяется RSA подпись.
+
+![rsa check](/pix/2021-03-10_16-41-25.png)
 
 
 
-###
-- [Простые приемы реверс-инжиниринга UEFI PEI-модулей на полезном примере](https://habr.com/ru/post/249655/)
-- [Николай Шлей CodeRush](https://habr.com/ru/users/CodeRush/)
 
-###
+
+
+
+
+
 
  загружаю в PhoenixTool v.2.66.
 
-
+48000: HP BB BFR OKU
+Blood Flow Restriction, Big Ffff...flying Rocket, Brominated Flame Retardants, 
 
 
 
