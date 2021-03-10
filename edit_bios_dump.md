@@ -6,7 +6,7 @@
 
 
 
-[Слитый программатором](get_bios_dump.md) дамп биоса **hp_bios0.bin** копирую под именем **hp_bios0_4ed.bin** в отдельную папку.
+[Слитый программатором](get_bios_dump.md) дамп биоса **hp_bios_original.bin** копирую под именем **hp_bios_4ed.bin** в отдельную папку.
 
 
 ## Used SW
@@ -26,7 +26,7 @@
 
 Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант, которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
 
-Открываю UEFIToolNE alpha 58 **hp_bios0_4ed.bin**, меню *Action-Search*, строка поиска hex **8680394286801613*
+Открываю UEFIToolNE alpha 58 **hp_bios_4ed.bin**, меню *Action-Search*, строка поиска hex **8680394286801613*
 ![8680394286801613](/pix/2021-03-09 13.03.59.png)
 
 И получаю 4 (четыре) результата: в DXE драйверах WLAN и PlatformSetup, в PEI-модулях PlatformStage1 и PlatformStage2.
@@ -51,6 +51,30 @@
 		|-	File GUID: 53984C6A-1B4A-4174-9512-A65E5BC8B278 - PlatformStage1
 		|-	File GUID: 233DF097-3218-47B2-9E09-FE58C2B20D22 - PlatfirmStage2
 	
+
+Сохраняю модуль: клик на строку результата поиска, правый клик на **модуль** с найденным PE32 image section, Extract as is... **File_DXE_driver_5EE86B35-0839-4A21-8845-F1ACB0F688AB_WLAN.ffs**
+![Extract as is..](2021-03-10_13-35-06.png)
+
+Открываю его в **HxD**, ищу смещение для hex последовательности *8680394286801613*, offset= B64h.
+
+Создаю текстовый файл, формат элементарный: строка с комментариями начинается с # или ;. Строка с заменами - смещение от начала, двоеточие, ожидаемый байт, пробел, новое значение байта в шестнадцатеричном виде.
+		
+		# module 5EE86B35-0839-4A21-8845-F1ACB0F688AB - WLAN
+		# offset B64h value  86803942 86801613 change to 86805A09 86801090 
+		b64: 86 86
+		b65: 80 80
+		b66: 39 5a
+		b67: 42 09
+		b68: 86 86
+		b69: 80 80
+		b6a: 16 10
+		b6b: 13 90
+
+Сохраняю как **5EE86B35-0839-4A21-8845-F1ACB0F688AB_patch.txt**.
+
+Аналогично сохраняю модули **File_DXE_driver_PlatformSetup_PlatformSetup.ffs** (offset: 7b98h), **File_PEI_module_53984C6A-1B4A-4174-9512-A65E5BC8B278_PlatformStage1** (offset 294сh) и **File_PEI_module_233DF097-3218-47B2-9E09-FE58C2B20D22_PlatformStage2.ffs** (offset 3108h),
+а так же создаю соответствующие файлы патчей **F6D35FBB-63EA-4B25-81A5-5E62B4886292_PlatformSetup_patch.txt**, **53984C6A-1B4A-4174-9512-A65E5BC8B278_PlatformStage1_patch.txt** и **233DF097-3218-47B2-9E09-FE58C2B20D22_PlatformStage2_patch.txt**. В репозитории они в папке **/src**
+
 Сохраняю все 4 body, последовательно клик на строку результата поиска, правый клик на найденный PE32 image section, Extract body...
 
 В командной строке **dir /b Sect*>patch_list.cmd**
