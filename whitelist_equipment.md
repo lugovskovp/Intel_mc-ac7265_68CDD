@@ -48,7 +48,7 @@
 		// my VEN_14E4&DEV_4315&SUBSYS_1508103C
 		WL_WIFI wifi[16];
 
- Применить &lt;F5%gt; к открытому файлу BIOS.
+ Применить &lt;F5&gt; к открытому файлу BIOS.
  
  ![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
  
