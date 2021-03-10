@@ -14,12 +14,12 @@
 
 
 1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открыть в 010Editor.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
-2. В Диспетчере устройств pci id сетевой WiFi карты VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
+2. В Диспетчере устройств pci id сетевой WiFi карты VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу в 010 Editor &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
 3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
 
 ![0x22838c](/pix/2021-03-03_10-56-13.png)
 
-4. Создаю новый темплейт (на предыдущем скриншоте он уже присутствует) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
+4. Создаю новый темплейт (на предыдущем скриншоте он уже присутствует) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть.
 
 		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
 		LittleEndian();
@@ -48,10 +48,11 @@
 		// my VEN_14E4&DEV_4315&SUBSYS_1508103C
 		WL_WIFI wifi[16];
 
-
+ Применить &lt;F5%gt; к открытому файлу BIOS.
+ 
+ ![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
+ 
 5. Структура WL_WIFI - эмпирическая, слепленная мной "на глаз", значение **mb_rev** мне не понятно, (может, ревизия, а, может, вариант драйверов) Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования. На скрине - предварительная, старая версия темплейта, новая **whitelist_equipment.bt ** в /src репозитория.
-
-![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
 
 Там изменено формирование строки структуры 
 
@@ -89,6 +90,6 @@ SUBVENDORs:
 
 ## Итоги: 
 
-Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
+Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, и всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
 
-А [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) всё же еще интереснее.
+А [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) еще интереснее.
