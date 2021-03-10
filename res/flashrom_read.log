@@ -5,6 +5,10 @@ flashrom is free software, get the source code at https://flashrom.org
 Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
 Error: Cannot open serial port: Permission denied
 Error: Programmer initialization failed.
+
+
+
+
 ppl@ppl-K53SD:~/Work/stm32-vserprog/flashrom$ sudo ./flashrom -p serprog:dev=/dev/ttyACM0
 [sudo] пароль для ppl:
 flashrom v1.2 on Linux 5.4.0-66-generic (x86_64)
@@ -44,7 +48,11 @@ serprog: requested mapping W25Q256.V is incompatible: 0x2000000 bytes at 0x00000
 serprog: requested mapping W25Q256JV_M is incompatible: 0x2000000 bytes at 0x00000000fe000000.
 Multiple flash chip definitions match the detected chip(s): "MX25L3205(A)", "MX25L3205D/MX25L3208D", "MX25L3206E/MX25L3208E", "MX25L3273E"
 Please specify which chip definition to use with the -c <chipname> option.
-ppl@ppl-K53SD:~/Work/stm32-vserprog/flashrom$ sudo ./flashrom -p serprog:dev=/dev/ttyACM0:4000000 -c MX25L3205D/MX25L3208D -r ~/Work/hp_bios.bin
+
+
+
+
+ppl@ppl-K53SD:~/Work/stm32-vserprog/flashrom$ sudo ./flashrom -p serprog:dev=/dev/ttyACM0:4000000 -c MX25L3205D/MX25L3208D -r ~/Work/hp_bios_original.bin
 flashrom v1.2 on Linux 5.4.0-66-generic (x86_64)
 flashrom is free software, get the source code at https://flashrom.org
 
@@ -52,12 +60,6 @@ Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
 serprog: Programmer name is "stm32-vserprog"
 Found Macronix flash chip "MX25L3205D/MX25L3208D" (4096 kB, SPI) on serprog.
 Reading flash... done.
-ppl@ppl-K53SD:~/Work/stm32-vserprog/flashrom$ sudo ./flashrom -p serprog:dev=/dev/ttyACM0:4194304 -c MX25L3205D/MX25L3208D -r ~/Work/hp_bios4194304.bin
-flashrom v1.2 on Linux 5.4.0-66-generic (x86_64)
-flashrom is free software, get the source code at https://flashrom.org
 
-Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
-serprog: Programmer name is "stm32-vserprog"
-Found Macronix flash chip "MX25L3205D/MX25L3208D" (4096 kB, SPI) on serprog.
-Reading flash... done.
+
 
