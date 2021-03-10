@@ -25,6 +25,7 @@
 Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант, которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
 
 Открываю в UEFIToolNE alpha 58 **hp_bios_4ed.bin**. Меню *Action-Search*, строка поиска hex **8680394286801613*
+
 ![8680394286801613](/pix/2021-03-09 13.03.59.png)
 
 И получаю 4 (четыре) результата: в DXE драйверах WLAN и PlatformSetup, в PEI-модулях PlatformStage1 и PlatformStage2.
@@ -35,6 +36,7 @@
 		Hex pattern "8680394286801613" found as "8680394286801613" in 233DF097-3218-47B2-9E09-FE58C2B20D22/PE32 image section at body-offset 30A8h
 
 Интерфейс UEFITool удобен, клик на результат поиска синхронизирует главное окно, переходя к необходимому модулю. 
+
 ![результат поиска](/pix/2021-03-09 13.06.03.png)
 
 	FileSystem GUID: 7A9354D9-0468-444A-81CE-0BF617D890DF (DXE том)
@@ -51,7 +53,8 @@
 	
 
 Сохраняю весь модуль: клик на строку результата поиска, правый клик на **модуль** с найденным PE32 image section, Extract as is... **File_DXE_driver_5EE86B35-0839-4A21-8845-F1ACB0F688AB_WLAN.ffs**
-![Extract as is..](2021-03-10_13-35-06.png)
+
+![Extract as is..](/pix/2021-03-10_13-35-06.png)
 
 Открываю его в **HxD**, ищу смещение для hex последовательности *8680394286801613*, offset= B64h.
 
