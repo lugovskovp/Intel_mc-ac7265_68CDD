@@ -1,0 +1,10 @@
+# module F6D35FBB-63EA-4B25-81A5-5E62B4886292 - PlatformSetup
+# offset 7b98h value  86803942 86801613 change to 86805A09 86801090 
+7b98: 86 86
+7b99: 80 80
+7b9a: 39 5a
+7b9b: 42 09
+7b9c: 86 86
+7b9d: 80 80
+7b9e: 16 10
+7b9f: 13 90
