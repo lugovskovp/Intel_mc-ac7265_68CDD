@@ -13,13 +13,13 @@
 ## Что есть в WL
 
 
-1. Взятый из распакованной прошивки HP update BIOS 68CDD rev.F60 открыть в 010Editor.  (в репозитории в /BIOS)
-2. В Диспетчере устройств сетевая карта pci id VEN_14E4&DEV_4315&SUBSYS_1508103C. Надо найти &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
+1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открыть в 010Editor.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
+2. В Диспетчере устройств pci id сетевой WiFi карты VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
 3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
 
 ![0x22838c](/pix/2021-03-03_10-56-13.png)
 
-4. Создаю новый темплейт (на предыдущем скриншоте он уже есть) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
+4. Создаю новый темплейт (на предыдущем скриншоте он уже присутствует) с содержимым листинга ниже. C-like синтаксис, проблем с пониманием не должно быть. Применить <F5>.
 
 		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
 		LittleEndian();
@@ -33,7 +33,8 @@
 			DWORD   subsys   <bgcolor=cLtGreen, format=hex>;
 			WORD mb_rev;
 			wchar_t FCCID[15] <bgcolor=cLtYellow, format=hex>;
-		}WL_WIFI<read=Read_WL_WIFI>;
+		}WL_WIFI <read=Read_WL_WIFI>;
+		
 		string Read_WL_WIFI(WL_WIFI &a){
 			local string s;
 		SPrintf(s, "| [PCI\\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI%%5CVEN_%04X%%26DEV_%04X) | %X |\"%s\"| []() | |",
@@ -58,7 +59,7 @@
 			
 Чтобы скопировав (right click - Copy column) колонку результатов Value получлась почти MarkDown - таблица, к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
 
-|VendorID&DeviceID&SubsysID|Unk| String |FCCID|Notes|802.11|
+|VendorID&DeviceID&SubsysID|Unk| FCCID |Name|Notes|802.11|
 |------					|------|-----	|-----|-----|-------|
 | [PCI\VEN_8086&DEV_4239&SUBSYS_13118086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"PD9622ANHU"| [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) | | gn|
 | [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) | B |"  "| [Centrino Advanced-N 6200 2x2 ABG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) | | bg|
