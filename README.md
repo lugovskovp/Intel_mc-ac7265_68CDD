@@ -6,10 +6,12 @@
 
 ## Предыстория
 
-В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и в сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, ut to 867 Mbps. Модуль пришел, установленный в ASUS нотник показал полную работоспособность и соответствие заявленным характеристикам.
+В полной уверенности, что уж с 2008 г должны были решить проблему whitelist, и в сети должен найтись BIOS с отключенной проверкой оборудования, заказал на али [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html). Wi-Fi 802,11ac, 2.4GHz + 5GHz, Bluetooth 4.2, up to 867 Mbps. 
 
-А вот упс.
-Не найдено успешных примеров прошивок модифицированных BIOS HP 68CDD - ProoBook 6440b, 6550b, 6540b.
+Модуль пришел, установленный в ASUS нотник показал полную работоспособность и соответствие заявленным характеристикам.
+
+А вот с HP ProBook 6540b упс.
+Не найдено успешных примеров прошивок модифицированных BIOS HP **68CDD** - ProoBook 6440b, 6550b, 6540b.
 - [1. Поиск 68CDD по www.bios-mods.com](https://www.bios-mods.com/search/?cx=partner-pub-9226021234789650%3A6147460733&cof=FORID%3A10&ie=UTF-8&q=68CDD&sa=Search&siteurl=www.bios-mods.com%2Fforum%2FForum-WiFi-WWAN-Whitelist-Removal&ref=www.bios-mods.com%2Fforum%2Farchive%2Findex.php%3Fforum-143.html&ss=172j29584j2)
 - []()
 - [Устанавливаем неподдерживаемую Wifi карту в HP Pavilion dv6-1319er](https://habr.com/ru/post/108820/)
@@ -19,30 +21,49 @@
  
 Остается вариант самому как-то разбираться с этой темой.
 
-## Что делать.
+## Шаг за шагом.
 
 ### Original WiFi Whitelist
 
 Для начала [посмотреть, что за WiFi оборудование в белом списке](whitelist_equipment.md)
 
-HP ProBook 6540b имеет возможность серфинга и просмотра электронной почты без загрузки основной ОС.  QuickWeb и  QuickLook. То есть в прошивке есть драйвера для WiFi карт из whitelist. Можно быть уверенным, для иной карты эта функциональность работать не будет, и, возможно, при включении её в BIOS вообще окирпичится. 
+HP ProBook 6540b имеет возможность серфинга и просмотра электронной почты без загрузки основной ОС.  QuickWeb и  QuickLook. То есть в прошивке есть драйвера для WiFi карт из whitelist. Можно быть уверенным, для иной карты эта функциональность работать не будет, и, вероятно, при включении её в BIOS вообще окирпичится. 
 
 
 ### Слить дамп BIOSа.
 
+ВНИМАНИЕ! **ЛЮБОЕ ковыряние в BIOS необходимо начинать с создания бекапа содержимого конкретного компьютера.**
+
+Как получить [слитый дамп flash памяти](get_bios_dump.md)
+
+
+### Внести необходимые изменения
+
+Увы, идеального инструмента с кнопкой "сделать хорошо" пока что нет, поэтому придется [самому редактировать](edit_bios_dump.md).
+
+
+### Собрать образ нового BIOS и залить его
+
+
+
+### Установить WiFi модуль
+
+Естественно, до установки - скачать и сохранить на диске драйвера к WiFi. Будет грустно с новой картой - и без драйверов.
 
 
 
 
-donovan6000:Damaged Uvula
+
+
+## donovan6000:Damaged Uvula
 https://web.archive.org/web/20160426152947/http://donovan6000.blogspot.com:80/2015/01/damaged-uvula.html
+
+
+
+
+
 ##
 
-FfsParser::parseRawArea: volume size stored in header 8000h differs from calculated using block map 10000h
-
-
-##
-ВНИМАНИЕ!
 Любая перепрошивка БИОСа на программаторе должна начинаться с сохранения оригинального содержимого флэшек в файлы бэкапов
 
 https://ascnb1.ru/forma1/viewtopic.php?f=387&t=96778&start=0
