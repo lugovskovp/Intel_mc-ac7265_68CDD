@@ -24,7 +24,7 @@
 
 Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант, которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
 
-Открываю в UEFIToolNE alpha 58 **hp_bios_4ed.bin**. Меню *Action-Search*, строка поиска hex **8680394286801613*
+Открываю в UEFIToolNE alpha 58 **hp_bios_4ed.bin**. Меню *Action-Search*, строка поиска hex **8680394286801613**
 
 ![8680394286801613](/pix/2021-03-09 13.03.59.png)
 
