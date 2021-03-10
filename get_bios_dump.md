@@ -14,7 +14,7 @@
 - Linux Mint, установленный на другом ноутбуке.
 - [BIOS Backup ToolKit V2.0](https://www.google.com/search?q=BIOS+Backup+ToolKit+V2.0&oq=BIOS+Backup+ToolKit+V2.0) - утилита, сохраняющая без SPI-программатора содержимое BIOS
 - [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58) - утилита просмотра UEFI. 
-
+- [Total commander](https://www.ghisler.com/)
 
 ## Микросхема flash с BIOS
 
@@ -90,12 +90,14 @@
 ![В сборе 1.](/pix/IMG_20210308_194425.jpg)
 ![В сборе 2.](/pix/IMG_20210308_194627.jpg) 
 
+8. На всякий случай в репозитории в *bin.prebuild.stm32vseprog* - полученные бинарники FW stm32-vseprog/Makefile
 
-## Дамп прошивки.
+
+## Получение дампа прошивки.
 
 Отсоединяю шнур питания, и батарею ноутбука. Снимаю 3.3в. батарейку - CMOS слетит, при загрузке будет предупреждение, но внутренняя схематика платы мне неизвестна, мало ли где-то как-то эти вольты захотят выскочить. Присоединяю клипсу к микросхеме flash, соблюдая полярность. Включаю USP кабель программатора в нотник с Linux.
 
-Ниже - сокращенный ввод команд, полный лог - (в репозитории](/res/flashrom_read.log).
+Ниже - сокращенный ввод команд, полный лог - [в репозитории](/res/flashrom_read.log).
 
 		$> cd ~/Work/stm32-vserprog/flashrom$
 		$> ./flashrom -p serprog:dev=/dev/ttyACM0
@@ -113,11 +115,20 @@
 
 ## Итоги.
 
+Обратно на нотник с windows.
 
-BIOS Backup ToolKit V2.0 - якобы сохраняет без SPI-программатора содержимое BIOS. 
+BIOS Backup ToolKit V2.0 - якобы сохраняет без SPI-программатора содержимое BIOS. Создаваемый им файл **Hewlett-Packard-68CDDVer.F.60.rom** занимает 2 621 440 байт.
+
+Загрузив hp_bios_original.bin в UEFI tool A58, вижу, что собственно BIOS - это только часть дампа.
+![original dump](/pix/2021-03-10_11-32-11.png)
 
 
+Сохраняю **Region_BIOS_BIOS_region.rgn** из UEFI tool: BIOS region - RClick - Extract as is...  Размер совпадает с **Hewlett-Packard-68CDDVer.F.60.rom**.
 
+Проверяю насколько совпадает содержимое. В Total commander на противоположных панелях выделяю файлы, меню Файл - Сравнить по содержимому.
 
+![compare files](/pix/2021-03-10_11-38-48.png)
 
-Нужен программатор SPI, SW которого поддерживает этот чип.
+Абсолютно одинаковы.
+
+Т.е. получить область BIOS флешки, начинающуюся с Offset: 180000h, можно и без программатора. Но вот залить обратно отредактированную, не имея полного бекапа - это русская рулетка.
