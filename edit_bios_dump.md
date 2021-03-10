@@ -1,4 +1,6 @@
-# Правка BIOS
+# Правка модулей BIOS
+
+Слитый программатором [в предыдущей части](get_bios_dump.md) дамп биоса **hp_bios_original.bin** копирую под именем **hp_bios_4ed.bin** в отдельную папку.
 
 Задачи:
 - заменить в BIOS какой-то из VEN_DEV_SUBSYS в whitelist. 
@@ -6,17 +8,11 @@
 
 
 
-[Слитый программатором](get_bios_dump.md) дамп биоса **hp_bios_original.bin** копирую под именем **hp_bios_4ed.bin** в отдельную папку.
-
-
 ## Used SW
 
 - [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58) - latest release, новый движок парсинга, но пока что нет функционала редактирования - только просмотр/поиск, и возможность извлечения модулей.
 - [UEFI Tool 0.28](https://github.com/LongSoft/UEFITool/releases/tag/0.28.0) - старый движок, но полнофункциональный билдер.
 - [BinCmp2](https://sourceforge.net/projects/bincmp/files/bincmp2/bincmp%202.9.0/) - сравнение файлов, поиск и замена бинарных данных из коммандной строки
-
-
-- PhoenixTool v.2.66.
 
 
 
@@ -151,7 +147,7 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 ### Делай три!
 
-Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в самом файле обе структуры есть.
+Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в самом файле обе структуры есть. Может, версия IDA не та.
 
 ![EFI_PEI_SERVICES](/pix/2021-03-10_16-11-53.png)
 
