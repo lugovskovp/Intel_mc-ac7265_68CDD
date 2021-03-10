@@ -78,8 +78,7 @@
 а так же создаю соответствующие файлы патчей **F6D35FBB-63EA-4B25-81A5-5E62B4886292_PlatformSetup_patch.txt**, **53984C6A-1B4A-4174-9512-A65E5BC8B278_PlatformStage1_patch.txt** и **233DF097-3218-47B2-9E09-FE58C2B20D22_PlatformStage2_patch.txt**. В репозитории они в папке **/src**
 
 
-
-В командной строке **dir /b File_\*>patch_list.cmd**. 
+В командной строке: **dir /b File_\*>patch_list.cmd**. 
 
 ### Замена ID WiFi в модулях.
 
@@ -152,7 +151,7 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 ### Делай три!
 
-Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в файле они есть.
+Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в самом файле обе структуры есть.
 
 ![EFI_PEI_SERVICES](/pix/2021-03-10_16-11-53.png)
 
@@ -172,12 +171,15 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 ![rsa check](/pix/2021-03-10_16-41-25.png)
 
 
+**.text:10000FA9                 jnz     short loc_10000FB2 ; There need NOP NOP**
 
+![jnz     short loc_10000FB2](/pix/2021-03-10_17-53-50.png)
 
+В HxD:
 
+![jnz     short loc_10000FB2](2021-03-10_18-01-51.png)
 
-
-
+Создаю 
 
 
  загружаю в PhoenixTool v.2.66.
