@@ -78,8 +78,8 @@
 а так же создаю соответствующие файлы патчей **F6D35FBB-63EA-4B25-81A5-5E62B4886292_PlatformSetup_patch.txt**, **53984C6A-1B4A-4174-9512-A65E5BC8B278_PlatformStage1_patch.txt** и **233DF097-3218-47B2-9E09-FE58C2B20D22_PlatformStage2_patch.txt**. В репозитории они в папке **/src**
 
 
-В командной строке **dir /b File_\*>patch_list.cmd**. 
 
+В командной строке **dir /b File_\*>patch_list.cmd**. 
 
 ### Замена ID WiFi в модулях.
 
