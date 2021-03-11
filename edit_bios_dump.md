@@ -18,13 +18,13 @@
 
 ## Замена в whitelist ID оборудования.
 
-Модуль **Intel® Dual Band Wireless-AC 7265** я поставил в ноутбук с Linux Mint. Его PCI DeviceID можно командой **lspci**, параметр **-nn** выведет и цифровые значения, и человекочитаемые, параметр **-d 8086:** выдаст только PCI-утройства Intel.
+Свежекупленный модуль **Intel® Dual Band Wireless-AC 7265** я поставил в ноутбук с Linux Mint. Узнать его PCI DeviceID. Команда **lspci** с параметром **-d 8086:** выдаст только PCI-утройства Intel, параметр **-nn** выведет и цифровые значения, и человекочитаемые, среди массы оборудования будет и строка c DevID модуля.
 
                 $> lspci -nn -d 8086:
                 ...
                 03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
 
-Поняно, DEV=095a, теперь узнать SUBSYS
+Поняно, DEV=095a, теперь узнать SUBSYS, параметр **-d 8086:095a** ограничит вывод только этой картой, **-v** даст побольше информации
 
                   $> lspci -d 8086:095a -v -nn
                   03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
@@ -35,13 +35,13 @@
                           Kernel driver in use: iwlwifi
 	                  Kernel modules: iwlwifi
 
-Т.о. получается PCI\VEN=8086&DEV=095A&SUBSYS=90108086, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование  **86805a0986801090**
+Т.о. получается PCI\VEN=8086&DEV=095A&SUBSYS=90108086, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование  **86805a0986801090** (LittleEndian)
 
 
 ### Поиск модулей c WiFi IDs.
 
 Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант,
-которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
+которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**, их надо заменить на id новой карты **86805a0986801090**
 
 Открываю в UEFIToolNE alpha 58 **hp_bios_4ed.bin**. Меню *Action-Search*, строка поиска hex **8680394286801613**
 
@@ -170,20 +170,52 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 ### Делай три!
 
-Облом нумер раз: в стандартных структурах, подгруженных из behemoth.h, EFI_GUID и EFI_GUID находятся, а вот с EFI_PEI_SERVICES - облом. Нет, _EFI_PEI_SERVICES так же не находится, хотя в самом файле обе структуры есть. Может, версия IDA не та.
+```int __cdecl start(EFI_FFS_FILE_HEADER *FfsFileHeader, EFI_PEI_SERVICES **PeiServices)```
 
-![EFI_PEI_SERVICES](/pix/2021-03-10_16-11-53.png)
+start:
 
-Ок, в IDA-view A переименовываю **fdwReason** в **PeiServices**. Сходство с описанным в статье просто поразительное - явно компилировалось из того же исходника.
+		pop     ecx
+		push    [ebp+PeiServices]
+		call    sub_10004303    ; Сохранение PeiServices на стеке.
+		pop     ecx
+		push    [ebp+PeiServices]
+		call    sub_10000F76    ; А тут проверка RSA с загрузкой по смещению 14FEE0h
+		pop     ecx
+		mov     [ebp+var_11+1], eax
+		movzx   eax, byte_10006A30
+		cmp     eax, 0DEh
+		jnz     short loc_1000178E
 
-Сохранение PeiServices на стеке.
 
-![2021-03-10_16-24-27.png](/pix/2021-03-10_16-24-27.png)
 
-Внутри следующей переименовываю **arg_0** в **PeiServices**
+
+```int __cdecl sub_10000F76(EFI_PEI_SERVICES **PeiServices)```
+
+
+HOB Services
+The following services describe the capabilities in the PEI Foundation for providing Hand-Off
+Block (HOB) manipulation:
+GetHobList
+
+
 
 
 "*11h в данном случае — это BOOT_ON_S3_RESUME, т.е. если система просыпается из ACPI Sleep Mode*" (c)
+
+Кстати, все варианты EFI_BOOT_MODE, [согласно документации](https://dox.ipxe.org/PiBootMode_8h.html)
+
+			#define 	BOOT_WITH_FULL_CONFIGURATION   0x00
+			#define 	BOOT_WITH_MINIMAL_CONFIGURATION   0x01
+			#define 	BOOT_ASSUMING_NO_CONFIGURATION_CHANGES   0x02
+			#define 	BOOT_WITH_FULL_CONFIGURATION_PLUS_DIAGNOSTICS   0x03
+			#define 	BOOT_WITH_DEFAULT_SETTINGS   0x04
+			#define 	BOOT_ON_S4_RESUME   0x05
+			#define 	BOOT_ON_S5_RESUME   0x06
+			#define 	BOOT_WITH_MFG_MODE_SETTINGS   0x07
+			#define 	BOOT_ON_S2_RESUME   0x10
+			#define 	BOOT_ON_S3_RESUME   0x11
+			#define 	BOOT_ON_FLASH_UPDATE   0x12
+			#define 	BOOT_IN_RECOVERY_MODE   0x20
 
 И место, где проверяется RSA подпись.
 
@@ -198,15 +230,17 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 ![jnz     short loc_10000FB2](/pix/2021-03-10_18-01-51.png)
 
-Создаю 
+### Ремарка по UPD из статьи 
 
 
-В самой флешке НЕ хранится "запасной" копии BIOS, о которой Николай Шлей упоминает в конце своей статьи, а вот в файле BIOS с сайта hp.com - она есть. Слева - дамп, справа - вытащенный из SoftPack BIOS.
+В самой флешке НЕ хранится "запасной" копии BIOS, о которой Николай Шлей упоминает в конце своей статьи, а вот в файле BIOS с сайта hp.com - копия есть. Слева - дамп, справа - вытащенный из SoftPack BIOS.
 
 ![BIOSes](/pix/2021-03-10_20-07-02.png)
 
 
+### Замена JNZ на NOP NOP
 
+E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body_patch.txt
 
  загружаю в PhoenixTool v.2.66.
 

@@ -1,0 +1,5 @@
+# Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body.efi
+# offset fa9h set nop nop
+fa9: 75 90
+faa: 07 90
+
