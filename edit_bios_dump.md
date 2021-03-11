@@ -18,11 +18,30 @@
 
 ## Замена в whitelist ID оборудования.
 
-Модуль **Intel® Dual Band Wireless-AC 7265** я поставил в ноутбук с Linux Mint. 
+Модуль **Intel® Dual Band Wireless-AC 7265** я поставил в ноутбук с Linux Mint. Его PCI DeviceID можно командой **lspci**, параметр **-nn** выведет и цифровые значения, и человекочитаемые, параметр **-d 8086:** выдаст только PCI-утройства Intel.
+
+                $> lspci -nn -d 8086:
+                ...
+                03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
+
+Поняно, DEV=095a, теперь узнать SUBSYS
+
+                  $> lspci -d 8086:095a -v -nn
+                  03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
+	                  Subsystem: Intel Corporation Dual Band Wireless-AC 7265 [8086:9010]
+	                  Flags: bus master, fast devsel, latency 0, IRQ 37
+	                  Memory at ddc00000 (64-bit, non-prefetchable) [size=8K]
+	                  Capabilities: <access denied>
+                          Kernel driver in use: iwlwifi
+	                  Kernel modules: iwlwifi
+
+Т.о. получается PCI\VEN=8086&DEV=095A&SUBSYS=90108086, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование  **86805a0986801090**
+
 
 ### Поиск модулей c WiFi IDs.
 
-Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант, которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
+Из [списка оборудования](whitelist_equipment.md) в whitelist выбираю вариант,
+которого у меня на руках нет, и который вряд ли задумаю купить: [PCI\VEN_8086&DEV_4239&SUBSYS_13168086](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239), *Centrino Advanced-N 6200 2x2 ABG*. В LittleEndian цифры ID выглядят как **8680394286801613**
 
 Открываю в UEFIToolNE alpha 58 **hp_bios_4ed.bin**. Меню *Action-Search*, строка поиска hex **8680394286801613**
 
@@ -35,7 +54,7 @@
 		Hex pattern "8680394286801613" found as "8680394286801613" in 53984C6A-1B4A-4174-9512-A65E5BC8B278/PE32 image section at body-offset 2928h
 		Hex pattern "8680394286801613" found as "8680394286801613" in 233DF097-3218-47B2-9E09-FE58C2B20D22/PE32 image section at body-offset 30A8h
 
-Интерфейс UEFITool удобен, клик на результат поиска синхронизирует главное окно, переходя к необходимому модулю. 
+Интерфейс UEFITool удобен: клик на результат поиска синхронизирует главное окно, переводя к необходимому модулю.
 
 ![результат поиска](/pix/2021-03-09_13.06.03.png)
 
@@ -61,7 +80,7 @@
 Создаю текстовый файл, формат элементарный: строка с комментариями начинается с # или ;. Строка с заменами - смещение от начала, двоеточие, пробел, ожидаемый байт, пробел, новое значение байта в шестнадцатеричном виде.
 		
 		# module 5EE86B35-0839-4A21-8845-F1ACB0F688AB - WLAN
-		# offset B64h value  86803942 86801613 change to 86805A09 86801090 
+		# offset B64h value  86803942 86801613 change to 86805A09 86801090
 		b64: 86 86
 		b65: 80 80
 		b66: 39 5a
@@ -129,17 +148,18 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 Собственно его статья [Простые приемы реверс-инжиниринга UEFI PEI-модулей на полезном примере](https://habr.com/ru/post/249655/) определяет этот раздел. Посему читать прежде всего его, тут только те моменты, которые отличаются.
 
+
 ### Делай раз!
 
 Сообщение парсера **FfsParser::parseVolumeNonUefiData: non-UEFI data found in volume's free space** приводит к информации в области паддинга, которая вообще то ожидается заполненной FF.
 ![RSA? checksum - flag vs BIOS editing](/pix/2021-03-10_15-32-14.png)
 
-В конце строка **"SIG0F 6068CDD"**, версия BIOS, напомню, *F.60*, платформа BIOS *68CDD*.
+В конце строка **"$SIG0F 6068CDD"**, версия BIOS, напомню, *F.60*, платформа BIOS *68CDD*.
 
 
 ### Делай два!
 
-Как видно на скриншоте, смещение внутри тома не 12FEE0h, как в статье, а 14FEE0h. Поэтому ищу E0FE14h.
+На скриншоте видно, что смещение внутри тома не 12FEE0h, как в статье, а 14FEE0h. Поэтому ищу E0FE14h.
 
 		Hex pattern "E0FE14" found as "E0FE14" in Compressed section/PE32 image section at body-offset 10D2h
 		Hex pattern "E0FE14" found as "E0FE14" in Compressed section/PE32 image section at body-offset 10F7h
@@ -154,7 +174,7 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 
 ![EFI_PEI_SERVICES](/pix/2021-03-10_16-11-53.png)
 
-Ок, в IDA-view A переименовываю **fdwReason** в **PeiServices**. Сходство с описанным в статье просто поразительное.
+Ок, в IDA-view A переименовываю **fdwReason** в **PeiServices**. Сходство с описанным в статье просто поразительное - явно компилировалось из того же исходника.
 
 Сохранение PeiServices на стеке.
 
@@ -163,7 +183,7 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 Внутри следующей переименовываю **arg_0** в **PeiServices**
 
 
-"11h в данном случае — это BOOT_ON_S3_RESUME, т.е. если система просыпается из ACPI Sleep Mode" (c)
+"*11h в данном случае — это BOOT_ON_S3_RESUME, т.е. если система просыпается из ACPI Sleep Mode*" (c)
 
 И место, где проверяется RSA подпись.
 
