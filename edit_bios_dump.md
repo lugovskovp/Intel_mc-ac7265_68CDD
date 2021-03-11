@@ -11,9 +11,6 @@
 ## Used SW
 
 - [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58) - latest release, новый движок парсинга, но пока что нет функционала редактирования - только просмотр/поиск, и возможность извлечения модулей.
-- [UEFI Tool 0.28](https://github.com/LongSoft/UEFITool/releases/tag/0.28.0) - старый движок, но полнофункциональный билдер.
-- [BinCmp2](https://sourceforge.net/projects/bincmp/files/bincmp2/bincmp%202.9.0/) - сравнение файлов, поиск и замена бинарных данных из коммандной строки
-
 
 
 ## Замена в whitelist ID оборудования.
@@ -113,29 +110,16 @@
 		pause
 		
 
-При запуске **patch_list.cmd** по каждому файлу вывод примерно такой:
-
-		   >bincmp Section_PE32.efi -patch patch_7AF8h.txt
-			>  00007AF8:  86  86  ; skip (old 86 == new 86)
-			>  00007AF9:  80  80  ; skip (old 80 == new 80)
-			>  00007AFA:  39  5A  ; done
-			>  00007AFB:  42  09  ; done
-			>  00007AFC:  86  86  ; skip (old 86 == new 86)
-			>  00007AFD:  80  80  ; skip (old 80 == new 80)
-			>  00007AFE:  16  10  ; done
-			>  00007AFF:  13  90  ; done
-
-
 Утилита EFIPatch_0.28.0 гораздо удобнее, но её здесь использовать невозможно, т.к. HP BIOS несколько отличается от ожидаемого парсером формата, и при открытии UEFI Tool выдает список ошибок:
 v.A58:
-FfsParser::parseRawArea: volume size stored in header 8000h differs from calculated using block map 10000h
-FfsParser::parseVolumeNonUefiData: non-UEFI data found in volume's free space
-MeParser::parseFptRegion: FPT partition table header checksum is invalid
+- FfsParser::parseRawArea: volume size stored in header 8000h differs from calculated using block map 10000h
+- FfsParser::parseVolumeNonUefiData: non-UEFI data found in volume's free space
+- MeParser::parseFptRegion: FPT partition table header checksum is invalid
 
 v.0.28
-parseVolume: non-UEFI data found in volume's free space
-parseVolume: unknown file system FFF12B8D-7696-4C8B-A985-2747075B4F50
-parseBios: volume size stored in header 8000h differs from calculated using block map 65536h
+- parseVolume: non-UEFI data found in volume's free space
+- parseVolume: unknown file system FFF12B8D-7696-4C8B-A985-2747075B4F50
+- parseBios: volume size stored in header 8000h differs from calculated using block map 65536h
 
 **unknown file system FFF12B8D-** - в старом парсере - область NVRAM
 
@@ -165,7 +149,7 @@ parseBios: volume size stored in header 8000h differs from calculated using bloc
 		Hex pattern "E0FE14" found as "E0FE14" in Compressed section/PE32 image section at body-offset 10F7h
 
 Оба вхождения - в PE32 image section модуля с названием **SecureUpdating**, GUID которого полностью совпадает с описанным в статье.
-Сохраняю и весь модуль как **File_PEI_module_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating.ffs** и запакованное тело PE32 **Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body**.
+Сохраняю запакованное тело PE32 **Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body.efi**.
 
 
 ### Делай три!
@@ -190,12 +174,6 @@ start:
 
 
 ```int __cdecl sub_10000F76(EFI_PEI_SERVICES **PeiServices)```
-
-
-HOB Services
-The following services describe the capabilities in the PEI Foundation for providing Hand-Off
-Block (HOB) manipulation:
-GetHobList
 
 
 
@@ -240,31 +218,25 @@ GetHobList
 
 ### Замена JNZ на NOP NOP
 
-E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body_patch.txt
+В коммандный файл **patch_list.cmd** добавляю строку **bincmp Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body.efi -patch E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body_patch.txt** и создаю файл патча **E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body_patch.txt**
 
- загружаю в PhoenixTool v.2.66.
-
-48000: HP BB BFR OKU
-Blood Flow Restriction, Big Ffff...flying Rocket, Brominated Flame Retardants, 
-
-
+		# Section_PE32_image_E64E8AEE-0C78-4D9D-86A9-40C97845A3D4_SecureUpdating_body.efi
+		# offset fa9h set nop nop
+		fa9: 75 90
+		faa: 07 90
 
 
+Возможен вопрос: а нафига все эти лишние телодвижения, создание файлов патчей, командных файлов, использование дополнительной утилиты? 
 
+Ответ простой - просто я очень ленивый. Если потребуется итеративно пересобирать - то эти, уже отлаженные действия можно будет выполнить практически на автомате. И через год совершенно не буду помнить по какому смещению что и куда правил. Какие именно файлы, и не ошибся ли циферкой. Поэтому мне спокойнее работа с логгируемыми действиями, повторение которых или объяснение кому-либо потребуют минимальных усилий. А так никто не запрещает прямо в HxD править значения руками.
 
-					
- 
- 
+## Итоги
 
-
-##
-
-
-##
+Название раздела - Правка модулей BIOS - форменный обман. Здесь только достал из BIOS 4 модуля и одну запакованную секцию. И подготовил коммандный файл с файлами патчей, который буду запускать только в следующем разделе - [Сборка содержимого UEFI flash и прошивка](build_bios_dump.md)
 
 
 
-##
+
 
 
 
