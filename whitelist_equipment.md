@@ -68,22 +68,23 @@
 
 |Unkn| Model name (Ven, Dev, Subsys) | 802.11 <br><sub>hypothetic</sub>| FCCID | Notes |  
 |----|-----							 |----							   |----	|----	 |
-| B | [	Centrino Advanced-N 6200 2x2 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" | [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW))  |
+| B | [	Centrino Advanced-N 6200 2x2 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" | [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) [photo Centrino_Advanced-N_6200](https://aliexpress.ru/item/32570574180.html) |
 | B | [Centrino Advanced-N 6200 2x2 ABG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " | [Centrino Advanced-N 6200 2x2 ABG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) |
 | B | [Centrino Advanced-N 6200 2x2 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  [Centrino Advanced-N 6200 2x2 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) |
 | B | [Centrino Advanced-N 6200 2x2 ABG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <br> VEN 8086 : DEV 422C : SUBSYS 13068086| | "  " | [Centrino Advanced-N 6200 2x2 ABG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Advanced-N_6200_(622ANHMW)) |
-| B | [Centrino Ultimate-N 6300 3x3 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) <br> VEN 8086 : DEV 4238 : SUBSYS 11118086| | "PD9633ANHU" | [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) |
-| B | [Centrino Ultimate-N 6300 3x3 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) <br> VEN 8086 : DEV 422B : SUBSYS 11018086| | "  " |  [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) |
-| A | [U98Z049.00 Wireless Mini PCIe Card](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" | 	BCM4312 802.11b/g LP-PHY  [U98Z049.00 Wireless Mini PCIe Card](http://en.techinfodepot.shoutwiki.com/wiki/Foxconn_U98Z049.00_(HP))  [На Broadcom BCM4312 и Dell и Lite-On делали карты с таким FCCID](http://en.techinfodepot.shoutwiki.com/w/index.php?title=Special%3ASearch&search=QDS-BRCM1030&fulltext=1) |
+| B | [Centrino Ultimate-N 6300 3x3 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) <br> VEN 8086 : DEV 4238 : SUBSYS 11118086| 
+2,4 GHz/5 Ghz ! | "PD9633ANHU" | [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) [photo aliexp](https://aliexpress.ru/item/32738189307.html) |
+| B | [Centrino Ultimate-N 6300 3x3 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) <br> VEN 8086 : DEV 422B : SUBSYS 11018086| agn | "  " |  [Centrino Ultimate-N 6300 3x3 AGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Ultimate-N_6300) |
+| A | [U98Z049.00 Wireless Mini PCIe Card](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" | 	BCM4312 802.11b/g LP-PHY  [U98Z049.00 Wireless Mini PCIe Card](http://en.techinfodepot.shoutwiki.com/wiki/Foxconn_U98Z049.00_(HP))  [На Broadcom BCM4312 и Dell и Lite-On делали карты с таким FCCID](http://en.techinfodepot.shoutwiki.com/w/index.php?title=Special%3ASearch&search=QDS-BRCM1030&fulltext=1) [photo on aliexp] |
 | A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1508103C| | "  " | BCM4312 802.11b/g LP-PHY - PCI\VEN_14E4&DEV_4315 Lovely unkn card, SubVen=103c, HP  |
 | F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1509103C| | "QDS-BRCM1031" | BCM4322 802.11a/b/ g/n Wireless LAN Controller - PCI\VEN_14E4&DEV_432B  [Foxconn U98Z051.00 (HP)](http://en.techinfodepot.shoutwiki.com/wiki/Foxconn_U98Z051.00_(HP))  |
 | F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " | BCM4322 802.11a/b/ g/n Wireless LAN Controller - PCI\VEN_14E4&DEV_432B  |
 | A | [WMIB-275N Half-size Mini PCIe Card](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1509103C| | "QDS-BRCM1041" | BCM43224 802.11a/b/ g/n  [WMIB-275N Half-size Mini PCIe Card](http://en.techinfodepot.shoutwiki.com/wiki/Gemtek_WMIB-275N_(HP))  |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| | "  " | 	BCM43224 802.11a/b/ g/n - PCI\VEN_14E4&DEV_4353 | []() |
-| B | [Centrino Wireless-N 1000 BGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13058086| | "  " | [Centrino Wireless-N 1000 BG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) |
-| A | [Centrino Wireless-N 1000 BGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13158086| | "PD9112BNHU" |  |
-| B | [Centrino Wireless-N 1000 BG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13068086| | "  " |  [Centrino Wireless-N 1000 BG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) |
-| B | [Centrino Wireless-N 1000 BG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13168086| | "  " |   |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| bgn | "  " | 	BCM43224 802.11a/b/ g/n - PCI\VEN_14E4&DEV_4353 [ali photo](https://aliexpress.ru/item/32990591146.html) 2.4/5?|
+| B | [Centrino Wireless-N 1000 BGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13058086| bgn | "  " | [Centrino Wireless-N 1000 BGN](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) |
+| A | [Centrino Wireless-N 1000 BGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13158086| bgn | "PD9112BNHU" |  [This 4 card](https://aliexpress.ru/item/32977511666.html) is a rebranded Intel WiFi Link 1000 (half size).|
+| B | [Centrino Wireless-N 1000 BG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13068086| bg | "  " |  [Centrino Wireless-N 1000 BG](http://en.techinfodepot.shoutwiki.com/wiki/Intel_Centrino_Wireless-N_1000_(112BNHMW)) |
+| B | [Centrino Wireless-N 1000 BG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13168086| bg | "  " |   |
 
 
 
@@ -150,7 +151,9 @@ SUBVENDORs:
 
 ## Итоги: 
 
+
 Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, и всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
+
 
 Экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, (PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59), так и в части BlueTooth ().
 -----
