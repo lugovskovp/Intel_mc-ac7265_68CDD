@@ -2,6 +2,12 @@
 
 Для начала неплохо бы составить список - а что вообще входит в белый лист.
 
+## TOC
+- [Used SW](#used-sw)
+- [HW in original Whitelist](#%D1%87%D1%82%D0%BE-%D0%B5%D1%81%D1%82%D1%8C-%D0%B2-wl)
+- [Dual Band Wireless MC-AC7265](#mini-pcie-intel-dual-band-wireless-ac-7265)
+- [Result](#%D0%B8%D1%82%D0%BE%D0%B3%D0%B8)
+
 
 ## Used SW
 
