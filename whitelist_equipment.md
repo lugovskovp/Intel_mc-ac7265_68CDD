@@ -68,7 +68,6 @@
 
 |Unkn| Model (Ven, Dev, Subsys) | FCCID | Notes | 802.11 |
 |----|-----						|----	|----	|----	 |
-
 | B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" |  | []() |
 | B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " |  | []() |
 | B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <\br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  | []() |
