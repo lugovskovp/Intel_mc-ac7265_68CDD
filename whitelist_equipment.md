@@ -62,7 +62,15 @@
 
 Там изменено формирование строки структуры 
 
-		[PCI\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI\%5CVEN_%04X\%26DEV_%04X) | %X |\"%s\"| []() | |"
+    local string s, frmt="";
+    frmt += "| %X ";
+    frmt += "| [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=";
+    frmt += "PCI%%5CVEN_%04X%%26DEV_%04X) <br> VEN %04X : DEV %04X : SUBSYS %08X";
+    frmt += "| | \"%s\" |  | []() |";
+    SPrintf(s, frmt,
+        a.mb_rev, 
+        a.ven_id, a.dev_id, a.ven_id, a.dev_id, a.subsys,
+        a.FCCID);
 			
 Чтобы скопировав (right click - Copy column) колонку результатов Value получлась почти MarkDown - таблица, к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
 
@@ -99,9 +107,10 @@ SUBVENDORs:
 
 ## Mini PCIe Intel® Dual Band Wireless-AC 7265
 
-Хотя на aliexpress есть множество предложений, но Intel уверен, что 7265, в отличие от 7260, выпускается исключительно в форм-факторах платы ```M,2 2230``` и ```M.2 1216```.
+Intel Corp уверен, что AC7265, в отличие от AC7260, выпускается исключительно в форм-факторах платы ```M,2 2230``` и ```M.2 1216```.
 
-Однако у меня на руках карта в формате```mPCIe```, вставленная в ноутбук ASER (без whitelist) с Linux Mint, считает себя именно ```Intel® Dual Band Wireless-AC 7265```.
+Однако у меня на руках карта в формате```mPCIe```, полученная с алиэкспресс. Linux Mint считает вставленную в ноутбук ASER (без whitelist)  именно ```Intel® Dual Band Wireless-AC 7265```.
+
 
 Команда **lspci** с параметром **-d 8086:** выдаст только PCI-утройства Intel, параметр **-nn** выведет и цифровые значения, и человекочитаемые, среди массы оборудования будет и строка c DevID модуля.
 
@@ -119,6 +128,7 @@ SUBVENDORs:
 	                  Capabilities: <access denied>
                       Kernel driver in use: iwlwifi
 	                  Kernel modules: iwlwifi
+
 
 Т.о. получается PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование, будет **86805a0986801090** (LittleEndian)
 
@@ -153,5 +163,6 @@ SUBVENDORs:
 - В оборудовании в whitelist ни на одной карте нет использования D-\D+ USB mPCIe разьёма.
 - WL не содержит ни одной карты с встроенным BT.
 - Конкретный экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, ```PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59)```, так и в части BlueTooth ```USB\VID_8087&PID_0A2A```.
+
 -----
-Дальше - рассказ как [сливаю дамп flash памяти](get_bios_dump.md)
+Дальше - рассказ, как [сливаю дамп flash памяти](get_bios_dump.md)
