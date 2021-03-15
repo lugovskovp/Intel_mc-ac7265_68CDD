@@ -1,6 +1,7 @@
 # Original WiFi Whitelist
 
-Для начала неплохо бы составить список - а что вообще входит в белый лист.
+Для начала неплохо бы составить список - а что вообще входит в белый лист. И что за оборудование на руках есть.
+
 
 ## TOC
 - [Used SW](#used-sw)
@@ -18,10 +19,9 @@
 
 ## Что есть в WL
 
-
-1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открываю в 010Editor.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
-2. В Диспетчере устройств pci id сетевой WiFi карты VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу в 010 Editor &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
-3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
+1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открываю в ```010 Editor```.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
+2. В Диспетчере устройств win10 pci id сетевой WiFi карты PCI\VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу в ```010 Editor``` &lt;ctrl&gt;+&lt;F&gt; последовательность байт **E4141543** - ага, тут LittleEndian.
+3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются: с offset 0x22838c.
 
 ![0x22838c](/pix/2021-03-03_10-56-13.png)
 
@@ -29,7 +29,7 @@
 
 		// info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
 		LittleEndian();
-		// find  E4141543
+		// finded  E4141543
 
 		FSeek(0x22838c);    
 
@@ -50,21 +50,45 @@
 			return s;
 		}
 
-
-		// my VEN_14E4&DEV_4315&SUBSYS_1508103C
 		WL_WIFI wifi[16];
 
  Применить &lt;F5&gt; к открытому файлу BIOS.
  
  ![010editor wl equipment](/pix/2021-03-03_11-23-36.png)
  
-5. Структура WL_WIFI - эмпирическая, слепленная мной "на глаз", значение **mb_rev** мне не понятно, (может, ревизия, а, может, вариант драйверов) Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  Результат - список оборудования. На скрине - предварительная, старая версия темплейта, новая **whitelist_equipment.bt ** в /src репозитория.
+5. Структура WL_WIFI - эмпирическая, слепленная мной "на глаз", значение **mb_rev** мне не понятно, (может, ревизия, может, вариант драйверов, может, вариант инициализации) Количество записей в **WL_WIFI wifi[16]** ровно так же - на глаз.  
+
+Результат - список оборудования. На скрине - предварительная, старая версия темплейта, новая **whitelist_equipment.bt ** в /src репозитория.
 
 Там изменено формирование строки структуры 
 
 		[PCI\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI\%5CVEN_%04X\%26DEV_%04X) | %X |\"%s\"| []() | |"
 			
 Чтобы скопировав (right click - Copy column) колонку результатов Value получлась почти MarkDown - таблица, к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
+
+|Unkn| Model (Ven, Dev, Subsys) | FCCID | Notes | 802.11 |
+|----|-----						|----	|----	|----	 |
+
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <\br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <\br> VEN 8086 : DEV 422C : SUBSYS 13068086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) <\br> VEN 8086 : DEV 4238 : SUBSYS 11118086| | "PD9633ANHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) <\br> VEN 8086 : DEV 422B : SUBSYS 11018086| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <\br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <\br> VEN 14E4 : DEV 4315 : SUBSYS 1508103C| | "  " |  | []() |
+| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <\br> VEN 14E4 : DEV 432B : SUBSYS 1509103C| | "QDS-BRCM1031" |  | []() |
+| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <\br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <\br> VEN 14E4 : DEV 4353 : SUBSYS 1509103C| | "QDS-BRCM1041" |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <\br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <\br> VEN 8086 : DEV 0083 : SUBSYS 13058086| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <\br> VEN 8086 : DEV 0084 : SUBSYS 13158086| | "PD9112BNHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <\br> VEN 8086 : DEV 0083 : SUBSYS 13068086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <\br> VEN 8086 : DEV 0084 : SUBSYS 13168086| | "  " |  | []() |
+
+
+
+Old table
 
 |VendorID&DeviceID&SubsysID|Unk| FCCID |Name|Notes|802.11|
 |------					|------|-----	|-----|-----|-------|
@@ -93,6 +117,7 @@ SUBVENDORs:
 - 103c : Hewlett Packard
 - 8086 : Intel
 - 14e4 : Broadcom Corporation
+
 
 ## Mini PCIe Intel® Dual Band Wireless-AC 7265
 
@@ -150,5 +175,5 @@ SUBVENDORs:
 Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, и всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
 
 Экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, (PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59), так и в части BlueTooth ().
-
+-----
 Дальше - [сливаю дамп flash памяти](get_bios_dump.md)
