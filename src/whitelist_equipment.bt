@@ -1,21 +1,15 @@
 //------------------------------------------------
 //--- 010 Editor v11.0.1 Binary Template
 //
-//      File: 
-//   Authors: 
+//      File: Witelist WiFi in HB BIOS 68CDD v.F.60
+//      Authors: https://github.com/lugovskovp/Intel_mc-ac7265_68CDD
 //   Version: 
-//   Purpose: 
-//  Category: 
-// File Mask: 
-//  ID Bytes: 
-//   History: 
 //------------------------------------------------
-
 
 
 // info from  VEN_14E4&DEV_4315&SUBSYS_1508103C
 LittleEndian();
-// find  E4141543
+// finded  E4141543
 
 FSeek(0x22838c);    
 
@@ -27,16 +21,21 @@ typedef struct{
     wchar_t FCCID[15] <bgcolor=cLtYellow, format=hex>;
 }WL_WIFI<read=Read_WL_WIFI>;
 string Read_WL_WIFI(WL_WIFI &a){
-    local string s;
-SPrintf(s, "| [PCI\\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI%%5CVEN_%04X%%26DEV_%04X) | %X |\"%s\"| []() | |",
-    a.ven_id, a.dev_id, a.subsys,
-    a.ven_id, a.dev_id,
-    a.mb_rev, a.FCCID);
+    local string s, frmt;
+    frmt = "| [PCI\\VEN_%04X&DEV_%04X&SUBSYS_%08X](http://driverslab.ru/devsearch/find.php?search=PCI%%5CVEN_%04X%%26DEV_%04X) | %X |\"%s\"| []() | |";
+    
+    frmt = "";
+    frmt += "| %X ";
+    frmt += "| [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=";
+    frmt += "PCI%%5CVEN_%04X%%26DEV_%04X) <br> VEN %04X : DEV %04X : SUBSYS %08X";
+    frmt += "| | \"%s\" |  | []() |";
+    SPrintf(s, frmt,
+        a.mb_rev, 
+        a.ven_id, a.dev_id, a.ven_id, a.dev_id, a.subsys,
+        a.FCCID);
     return s;
 }
 
-
-// my VEN_14E4&DEV_4315&SUBSYS_1508103C
 WL_WIFI wifi[16];
 
 
