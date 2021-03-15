@@ -13,7 +13,7 @@
 ## Что есть в WL
 
 
-1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открыть в 010Editor.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
+1. Взятый из распакованной прошивки HP update **BIOS 68CDD rev.F60** открываю в 010Editor.  (в репозитории **/BIOS/68CDD.Ver.F.60 hp.BIN**)
 2. В Диспетчере устройств pci id сетевой WiFi карты VEN_14E4&DEV_4315&SUBSYS_1508103C. Ищу в 010 Editor &lt;ctrl&gt;+&lt;F&gt; последовательность байт E4141543 - LittleEndian.
 3. Явно прослеживаются повторяющиеся структуры. Заметно, где они начинаются, с offset 0x22838c.
 
@@ -88,10 +88,61 @@ SUBVENDORs:
 - 8086 : Intel
 - 14e4 : Broadcom Corporation
 
+## Mini PCIe Intel® Dual Band Wireless-AC 7265
+
+Хотя на aliexpress есть множество предложений, но Intel уверен, что 7265, в отличие от 7260, выпускается исключительно в форм-факторах платы ```M,2 2230``` и ```M.2 1216```.
+
+Однако у меня на руках карта в формате```mPCIe```, вставленная в ноутбук ASER (без whitelist) с Linux Mint, считает себя именно ```Intel® Dual Band Wireless-AC 7265```.
+
+Команда **lspci** с параметром **-d 8086:** выдаст только PCI-утройства Intel, параметр **-nn** выведет и цифровые значения, и человекочитаемые, среди массы оборудования будет и строка c DevID модуля.
+
+                $> lspci -nn -d 8086:
+                ...
+                03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
+
+ОК, DEV=095a, теперь узнать SUBSYS. Параметр **-d 8086:095a** ограничит вывод только этой картой, **-v** даст побольше информации
+
+                  $> lspci -d 8086:095a -v -nn
+                  03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
+	                  Subsystem: Intel Corporation Dual Band Wireless-AC 7265 [8086:9010]
+	                  Flags: bus master, fast devsel, latency 0, IRQ 37
+	                  Memory at ddc00000 (64-bit, non-prefetchable) [size=8K]
+	                  Capabilities: <access denied>
+                      Kernel driver in use: iwlwifi
+	                  Kernel modules: iwlwifi
+
+Т.о. получается PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование, будет **86805a0986801090** (LittleEndian)
+
+Однако, кроме WiFi, на карте есть и BlueTooth, который доступен через выведенный на mini PCIe USB. Команда **lsusb** выведет список установленных USB устройств, параметр **-v** выведет дополнительную информацию. Среди массы устройств выбираю информацию, относящуюся к BT подсисеме карты.
+
+		$> lsusb -v
+		...
+		Bus 001 Device 003: ID 8087:0a2a Intel Corp. 
+		Device Descriptor:
+		  bLength                18
+		  bDescriptorType         1
+		  bcdUSB               2.01
+		  bDeviceClass          224 Wireless
+		  bDeviceSubClass         1 Radio Frequency
+		  bDeviceProtocol         1 Bluetooth
+		  bMaxPacketSize0        64
+		  idVendor           0x8087 Intel Corp.
+		  idProduct          0x0a2a 
+		  bcdDevice            0.01
+		  iManufacturer           0 
+		  iProduct                0 
+		  iSerial                 0 
+		  bNumConfigurations      1 
+		...
+
+
+Поиск **USB\VID_8087&PID_0A2A** находит в папке с драйверами **c:\Program Files (x86)\Intel\Bluetooth\drivers\ibtusb\STP\Win10Release\x64\ibtusb.inf** "Intel(R) Wireless Bluetooth(R)"
+
+
 ## Итоги: 
 
 Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, и всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
 
-А [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) еще интереснее.
+Экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, (PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59), так и в части BlueTooth ().
 
 Дальше - [сливаю дамп flash памяти](get_bios_dump.md)
