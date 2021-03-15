@@ -1,0 +1,14 @@
+ppl@ppl-K53SD:~/Work/stm32-vserprog/flashrom$ sudo ./flashrom -p serprog:dev=/dev/ttyACM0:4000000 -c MX25L3205D/MX25L3208D -w ~/Work/68CDD_patched.bin
+flashrom v1.2 on Linux 5.4.0-66-generic (x86_64)
+flashrom is free software, get the source code at https://flashrom.org
+
+Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
+serprog: Programmer name is "stm32-vserprog"
+Found Macronix flash chip "MX25L3205D/MX25L3208D" (4096 kB, SPI) on serprog.
+Reading old flash chip contents... done.
+Erasing and writing flash chip... Erase/write done.
+Verifying flash... VERIFIED.
+
+
+
+
