@@ -68,22 +68,23 @@
 
 |Unkn| Model (Ven, Dev, Subsys) | FCCID | Notes | 802.11 |
 |----|-----						|----	|----	|----	 |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <\br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <\br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <\br> VEN 8086 : DEV 422C : SUBSYS 13068086| | "  " |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) <\br> VEN 8086 : DEV 4238 : SUBSYS 11118086| | "PD9633ANHU" |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) <\br> VEN 8086 : DEV 422B : SUBSYS 11018086| | "  " |  | []() |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <\br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" |  | []() |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <\br> VEN 14E4 : DEV 4315 : SUBSYS 1508103C| | "  " |  | []() |
-| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <\br> VEN 14E4 : DEV 432B : SUBSYS 1509103C| | "QDS-BRCM1031" |  | []() |
-| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <\br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " |  | []() |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <\br> VEN 14E4 : DEV 4353 : SUBSYS 1509103C| | "QDS-BRCM1041" |  | []() |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <\br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| | "  " |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <\br> VEN 8086 : DEV 0083 : SUBSYS 13058086| | "  " |  | []() |
-| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <\br> VEN 8086 : DEV 0084 : SUBSYS 13158086| | "PD9112BNHU" |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <\br> VEN 8086 : DEV 0083 : SUBSYS 13068086| | "  " |  | []() |
-| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <\br> VEN 8086 : DEV 0084 : SUBSYS 13168086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <br> VEN 8086 : DEV 422C : SUBSYS 13068086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4238) <br> VEN 8086 : DEV 4238 : SUBSYS 11118086| | "PD9633ANHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422B) <br> VEN 8086 : DEV 422B : SUBSYS 11018086| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1508103C| | "  " |  | []() |
+| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1509103C| | "QDS-BRCM1031" |  | []() |
+| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1509103C| | "QDS-BRCM1041" |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13058086| | "  " |  | []() |
+| A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13158086| | "PD9112BNHU" |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13068086| | "  " |  | []() |
+| B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0084) <br> VEN 8086 : DEV 0084 : SUBSYS 13168086| | "  " |  | []() |
+
 
 
 
