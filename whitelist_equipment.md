@@ -66,8 +66,8 @@
 			
 Чтобы скопировав (right click - Copy column) колонку результатов Value получлась почти MarkDown - таблица, к которой осталось только приделать шапку, распознать модели и написать заметки в правом столбце
 
-|Unkn| Model (Ven, Dev, Subsys) | FCCID | Notes | 802.11 |
-|----|-----						|----	|----	|----	 |
+|Unkn| Model (Ven, Dev, Subsys) | 802.11 <br> (hypothetic)| FCCID | Notes |  
+|----|-----						|----					|----	|----	 |
 | B | [	Centrino Advanced-N 6200 2x2 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13118086| | "PD9622ANHU" |  | []() |
 | B | [Centrino Advanced-N 6200 2x2 ABG](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_4239) <br> VEN 8086 : DEV 4239 : SUBSYS 13168086| | "  " |  | []() |
 | B | [Centrino Advanced-N 6200 2x2 AGN](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_422C) <br> VEN 8086 : DEV 422C : SUBSYS 13018086| | "  " |  | []() |
@@ -77,7 +77,7 @@
 | A | [U98Z049.00 Wireless Mini PCIe Card](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1507103C| | "QDS-BRCM1030" | 	BCM4312 802.11b/g LP-PHY | []() |
 | A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4315) <br> VEN 14E4 : DEV 4315 : SUBSYS 1508103C| | "  " | Unknown card, SubVen=103c, HP | []() |
 | F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1509103C| | "QDS-BRCM1031" |  | []() |
-| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " |  | []() |
+| F | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_432B) <br> VEN 14E4 : DEV 432B : SUBSYS 1510103C| | "  " | BCM4322 802.11a/b/ g/n Wireless LAN Controller - PCI\VEN_14E4&DEV_432B | []() |
 | A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1509103C| | "QDS-BRCM1041" |  | []() |
 | A | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_14E4%26DEV_4353) <br> VEN 14E4 : DEV 4353 : SUBSYS 1510103C| | "  " |  | []() |
 | B | [INSERT_NAME](http://driverslab.ru/devsearch/find.php?search=PCI%5CVEN_8086%26DEV_0083) <br> VEN 8086 : DEV 0083 : SUBSYS 13058086| | "  " |  | []() |
