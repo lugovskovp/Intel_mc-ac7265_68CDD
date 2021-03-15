@@ -150,10 +150,8 @@ SUBVENDORs:
 
 ## Итоги: 
 
-
-Лучший - 300Мбит [Intel_Centrino_Advanced-N_6200_(622ANHMW)](https://aliradar.com/search?q=622ANHMW) не встанет, там SUBSYS_13218086, и всё же Centrino Advanced-N 6200 смотрится интерееснее моей карты.
-
-
-Экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, (PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59), так и в части BlueTooth ().
+- В оборудовании в whitelist ни на одной карте нет использования D-\D+ USB mPCIe разьёма.
+- WL не содержит ни одной карты с встроенным BT.
+- Конкретный экземпляр [Intel® Dual Band Wireless-AC 7265](https://ark.intel.com/content/www/ru/ru/ark/products/83635/intel-dual-band-wireless-ac-7265.html) - в исполнении half mini PCI-e полностью работоспособен, как в части WiFi 802.11ac, в диапазонах 2.4HGz, 5HGz, ```PCI\VEN_8086&DEV_095A&SUBSYS_90108086&REV_59)```, так и в части BlueTooth ```USB\VID_8087&PID_0A2A```.
 -----
-Дальше - [сливаю дамп flash памяти](get_bios_dump.md)
+Дальше - рассказ как [сливаю дамп flash памяти](get_bios_dump.md)
