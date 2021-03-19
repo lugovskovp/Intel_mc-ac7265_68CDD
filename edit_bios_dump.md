@@ -15,24 +15,7 @@
 
 ## Замена в whitelist ID оборудования.
 
-Свежекупленный модуль **Intel® Dual Band Wireless-AC 7265** я поставил в ноутбук с Linux Mint. Узнать его PCI DeviceID. Команда **lspci** с параметром **-d 8086:** выдаст только PCI-утройства Intel, параметр **-nn** выведет и цифровые значения, и человекочитаемые, среди массы оборудования будет и строка c DevID модуля.
-
-                $> lspci -nn -d 8086:
-                ...
-                03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
-
-Поняно, DEV=095a, теперь узнать SUBSYS, параметр **-d 8086:095a** ограничит вывод только этой картой, **-v** даст побольше информации
-
-                  $> lspci -d 8086:095a -v -nn
-                  03:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a] (rev 59)
-	                  Subsystem: Intel Corporation Dual Band Wireless-AC 7265 [8086:9010]
-	                  Flags: bus master, fast devsel, latency 0, IRQ 37
-	                  Memory at ddc00000 (64-bit, non-prefetchable) [size=8K]
-	                  Capabilities: <access denied>
-                          Kernel driver in use: iwlwifi
-	                  Kernel modules: iwlwifi
-
-Т.о. получается PCI\VEN=8086&DEV=095A&SUBSYS=90108086, или, в "терминах HP whitelist" hex-последовательность, описывающая оборудование  **86805a0986801090** (LittleEndian)
+hex-последовательность, описывающая оборудование  **86805a0986801090** (LittleEndian)
 
 
 ### Поиск модулей c WiFi IDs.
