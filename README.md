@@ -21,7 +21,10 @@
  
 Остается вариант самому как-то разбираться с этой темой.
 
-## Шаг за шагом.
+## Ссылки UEFI и потрошению BIOS
+
+- Великолепный цикл академических статей по UEFI на Хабре, которые написал [Николай Шлей](https://habr.com/ru/users/CodeRush/) еще в 2012-2016 годах, но актуальности они не потеряли.
+-- 
 
 ### Original WiFi Whitelist
 
@@ -96,3 +99,5 @@ https://ascnb1.ru/forma1/viewtopic.php?f=387&t=96778&start=0
 6- In DUMP folder, edit the module E62F9F2F-4895-4AB5-8F1A-399D0D9C6B90_2_776.ROM, search the hexadecimal string 86 80 2C 42 86 80 06 13 and replace 06 by 01(this is difference between ID 5100 and 6200, just a single digit),save the modification.
 7- Press OK on Andy's tool popup
 The Andy's tool will notice about changes that were made and will reintegrate the module.
+---------------
+WTF? [The whitelist is not that big of a problem because the WLAN whitelist contains a Test WLAN device with the ID 0000 0000 so any card works in this slot.](https://www.win-raid.com/t4120f16-HP-Insyde-RSA-signed-UEFI-mod.html)
