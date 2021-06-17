@@ -18,24 +18,24 @@
 :: ----------------------------------------------------------
 :: 2. Pach RCA checking in E64E8AEE-RCAchecker.efi
 @echo -----------------------------------------------------
-:: Make patch file - set NOP NOP instead 75 07
-@echo E64E8AEE-RCAchecker.patch
-@echo 0fa9: 90 90 >./patches/E64E8AEE-RCAchecker.patch
+:: Make patch file - set NOP NOP instead JNZ 75 07
+@echo E64E8AEE-RSAchecker
+@echo 0fa9: 90 90 >./patches/E64E8AEE-RSAchecker.patch
 
 :: backup
-@cp -f ./patches/E64E8AEE-RCAchecker.efi ./patches/E64E8AEE-RCAchecker.new
-@xxd -g1 -c16 -r ./patches/E64E8AEE-RCAchecker.patch ./patches/E64E8AEE-RCAchecker.new
+@cp -f ./patches/E64E8AEE-RSAchecker.efi ./patches/E64E8AEE-RSAchecker.new
+@xxd -g1 -c16 -r ./patches/E64E8AEE-RSAchecker.patch ./patches/E64E8AEE-RSAchecker.new
 
 :: checking sucsess
-@xxd -g1 ./patches/E64E8AEE-RCAchecker.efi>./patches/old.hex
-@xxd -g1 ./patches/E64E8AEE-RCAchecker.new>./patches/new.hex
+@xxd -g1 ./patches/E64E8AEE-RSAchecker.efi>./patches/old.hex
+@xxd -g1 ./patches/E64E8AEE-RSAchecker.new>./patches/new.hex
 @diff ./patches/old.hex ./patches/new.hex 
-@diff ./patches/old.hex ./patches/new.hex > ./patches/E64E8AEE-RCAchecker.hexpatch.diff
+@diff ./patches/old.hex ./patches/new.hex > ./patches/E64E8AEE-RSAchecker.hexpatch.diff
 
 
 
 :: ----------------------------------------------------------
-:: 3. Pach RCA checking offset
+:: 3. Pach RSA checking offset
 
 
 pause
