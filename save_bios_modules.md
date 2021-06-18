@@ -13,7 +13,7 @@
 
 
 
-## Подмена в BIOS одного из VEN_DEV_SUBSYS в whitelist модулей. 
+## Извлечение UEFI модулей, содержащих Whitelist WiFi.
 
 Используя понимание [формата Whitelist WiFi HP](whitelist_hp6540b.md), ясно, что заменять можно любую запись в whitelist, кроме, пожалуй, родного модуля - чтобы сохранить возможность использовать и его.
 
@@ -63,18 +63,34 @@
 		@echo WLAN
 		"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 5EE86B35-0839-4A21-8845-F1ACB0F688AB -o efi -m body -t 10
 		@mv -f ./efi/body.bin .
-		@ren body.bin F6D35FBB-WLAN.efi
+		@ren body.bin 5EE86B35-WLAN.efi
 		@rm -f -r ./efi
 
 UEFIExtract (да, он находится "выше" корня git) ищет в hp_bios.bin файл с GUID 5EE86B35-0839-4A21-8845-F1ACB0F688AB, извлекает его тело (-m body) типа 10h (полный перечень возможных значений см UEFIExtract --help) в создаваемую директорию ./efi/ с именем body.bin. Если efi существует - Error 34.
-Переименовываю в F6D35FBB-WLAN.efi, перемещаю в ./work.
+Переименовываю в 5EE86B35-WLAN.efi, перемещаю в ./work.
 
-Аналогично - 53984C6A-PlatformStage1.efi и 233DF097-PlatformStage2.efi
+Аналогично - 53984C6A-PlatformStage1.efi и 233DF097-PlatformStage2.efi.
+
+А вот с F6D35FBB-PlatformSetup.efi такое не прокатывает - Error 8. В чем проблемы - не очень понятно, [оставил Issue](https://github.com/LongSoft/UEFITool/issues/239) разработчикам.
+
+Извлекаю его вручную в ./work/F6D35FBB-PlatformSetup.handle_extracted.bin. И в коммандный файл ./work/_0_extract_dxe.cmd - строку для "получения" .efi.
+
+		cp -f F6D35FBB-PlatformSetup.handle_extracted.bin F6D35FBB-PlatformSetup.efi
 
 
-вызываю **sub_1_1_wl_patch.cmd** для извлечения тел модулей.
 
 
+## UEFI модуль с проверкой контрольной суммы BIOS.
+
+Извлекаю описанный в [How to hack BIOS RSA checker](hack_rsa.md) модуль SecureUpdating
+
+		@echo -------------------------------------------------------
+		@echo RCA check module
+		:: RCA check module
+		"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin E64E8AEE-0C78-4D9D-86A9-40C97845A3D4 -o efi -m body -t 10
+		mv -f ./efi/body.bin .
+		ren body.bin E64E8AEE-RSAchecker.efi
+		rm -f -r ./efi
 
 
 
