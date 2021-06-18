@@ -1,0 +1,138 @@
+# Извлечение модулей, /work/_0_extract_dxe.cmd
+
+Слитый программатором [в предыдущей части](get_bios_dump.md) дамп биоса **hp_bios_original.bin** копирую под именем **hp_bios.bin** в папку **./work**. Из-за сочетания природной лени с природной же настойчивостью, цель - создать command файл, запуском которого извлекаются/создаются все необходимые файлы модулей: **/work/_0_extract_dxe.cmd**
+
+
+
+## TOC
+- [Used SW](#used-sw)
+- [Извлечение UEFI модулей, содержащих Whitelist WiFi](#%D0%B8%D0%B7%D0%B2%D0%BB%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-uefi-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D0%B5%D0%B9-%D1%81%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%89%D0%B8%D1%85-whitelist-wifi)
+- [UEFI модуль с проверкой контрольной суммы BI](#uefi-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8C-%D1%81-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%BE%D0%B9-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D1%83%D0%BC%D0%BC%D1%8B-bios)
+- [VSS/NVRAM filesystem](#vssnvram-filesystem)
+- [ACPI таблицы, содержащие DSDT, Freeform PlatformAcpiTable](#acpi-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D1%8B-%D1%81%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%89%D0%B8%D0%B5-dsdt-freeform-platformacpitable)
+- [Итоги](#%D0%B8%D1%82%D0%BE%D0%B3%D0%B8) 
+
+
+
+## Used SW
+- Утилита UEFIExtract.exe из пакета [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58).
+
+
+
+## Извлечение UEFI модулей, содержащих Whitelist WiFi.
+
+Используя понимание [формата Whitelist WiFi HP](whitelist_hp6540b.md), ясно, что заменять можно любую запись в whitelist, кроме, пожалуй, родного модуля - чтобы сохранить возможность использовать и его.
+
+Под замену назначаю самый первый, **Centrino Advanced-N 6200 2x2 AGN**. VEN 8086 : DEV 4239 : SUBSYS 13118086	FCCID: "PD9622ANHU".
+Т.о. hex последовательность для поиска offset этой записи в **UEFI Tool NE alpha 58** будет выглядеть как **8680394286801113**.
+Открываю в UEFIToolNE alpha 58 **./work/hp_bios.bin**. Меню *Action-Search*.
+
+![2021-06-18_11-34-56.png](pix/2021-06-18_11-34-56.png)
+
+Да, пробелы для удобства чтения между значениями - допускаются. 
+
+Найдено в 4 модулях: в DXE драйверах WLAN и PlatformSetup, в PEI-модулях PlatformStage1 и PlatformStage2.
+
+		Hex pattern "8680394286801113" found as "8680394286801113" in EfiCrc32GuidedSectionExtractionGuid/PE32 image section at header-offset AC4h
+		Hex pattern "8680394286801113" found as "8680394286801113" in EfiCrc32GuidedSectionExtractionGuid/PE32 image section at header-offset 7AD4h
+		Hex pattern "8680394286801113" found as "8680394286801113" in 53984C6A-1B4A-4174-9512-A65E5BC8B278/PE32 image section at header-offset 2904h
+		Hex pattern "8680394286801113" found as "8680394286801113" in 233DF097-3218-47B2-9E09-FE58C2B20D22/PE32 image section at header-offset 3084h
+
+Интерфейс UEFITool хорош: даблклик на результат поиска синхронизирует главное окно, переводя к необходимому модулю.
+
+
+	FileSystem GUID: 7A9354D9-0468-444A-81CE-0BF617D890DF (DXE том)
+		|- File GUID: 4A538818-5AE0-4EB2-B2EB-488B23657022 - FvMainCompact
+			|- Compressed section
+				|- Raw section
+					|- FileSystem GUID: 7A9354D9-0468-444A-81CE-0BF617D890DF 
+						|- File GUID: 5EE86B35-0839-4A21-8845-F1ACB0F688AB - WLAN
+						|- File GUID: F6D35FBB-63EA-4B25-81A5-5E62B4886292 - PlatformSetup
+					
+	 FileSystem GUID: 7A9354D9-0468-444A-81CE-0BF617D890DF (PEI том)
+		|-	File GUID: 53984C6A-1B4A-4174-9512-A65E5BC8B278 - PlatformStage1
+		|-	File GUID: 233DF097-3218-47B2-9E09-FE58C2B20D22 - PlatfirmStage2
+	
+
+Сохраняю "Extract body" тело модуля WLAN
+
+![2021-06-18_11-51-39.png](pix/2021-06-18_11-51-39.png)
+
+Открываю в **HxD**, ищу смещение для hex последовательности *8680394286801113*, получаю offset= AC0h.
+
+Ясно, при сохранении тела первые 4 байта отбросятся, и смещения, найденные в UefiTool нужно будет уменьшать на 4.
+
+В **/work/_0_extract_dxe.cmd** 
+
+		@echo -------------------------------------------------------
+		@echo WLAN
+		"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 5EE86B35-0839-4A21-8845-F1ACB0F688AB -o efi -m body -t 10
+		@mv -f ./efi/body.bin .
+		@ren body.bin 5EE86B35-WLAN.efi
+		@rm -f -r ./efi
+
+UEFIExtract (да, он находится "выше" корня git) ищет в hp_bios.bin файл с GUID 5EE86B35-0839-4A21-8845-F1ACB0F688AB, извлекает его тело (-m body) типа 10h (полный перечень возможных значений см UEFIExtract --help) в создаваемую директорию ./efi/ с именем body.bin. Если folder efi существует будет Error 34.
+Переименовываю в 5EE86B35-WLAN.efi, перемещаю в ./work.
+
+Аналогично - 53984C6A-PlatformStage1.efi и 233DF097-PlatformStage2.efi.
+
+А вот с F6D35FBB-PlatformSetup.efi такое не прокатывает - Error 8. В чем проблемы - не очень понятно, [оставил Issue](https://github.com/LongSoft/UEFITool/issues/239) разработчикам.
+
+Извлекаю его вручную в ./work/F6D35FBB-PlatformSetup.handle_extracted.bin. И в коммандный файл ./work/_0_extract_dxe.cmd - строку для "получения" .efi.
+
+		cp -f F6D35FBB-PlatformSetup.handle_extracted.bin F6D35FBB-PlatformSetup.efi
+
+
+
+
+## UEFI модуль с проверкой контрольной суммы BIOS.
+
+Извлекаю описанный в [How to hack BIOS RSA checker](hack_rsa.md) модуль SecureUpdating и сохраняю как E64E8AEE-RSAchecker.efi
+
+		@echo -------------------------------------------------------
+		@echo RCA check module
+		:: RCA check module
+		"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin E64E8AEE-0C78-4D9D-86A9-40C97845A3D4 -o efi -m body -t 10
+		mv -f ./efi/body.bin .
+		ren body.bin E64E8AEE-RSAchecker.efi
+		rm -f -r ./efi
+
+
+## VSS/NVRAM filesystem
+
+Вообще есть проблема: UefiTool NE a58 - позволяет просмотреть и получить содержимое любой VSS переменной. Но т.к. пересборка образа UEFI проводится только старым движком - UefiTool v28, то полученные таблицы запихнуть обратно не выйдет.
+
+VSS variables (а их множество) хранятся именно в этой области, которую сохраню целиком как FFF12B8D_VSS_body.handle_extracted.bin. Причем так же руками - UEFIExtract не справляется с задачей сохранить тело, но единым файлом.
+
+
+		:: err: Guid FFF12B8D-7696-4C8B-A985-2747075B4F50 failed with 8 code!
+		:::::: and i made F6D35FBB-PlatformSetup.handle_extracted saved from from UefiTool
+		cp -f FFF12B8D_VSS_body.handle_extracted.bin FFF12B8D_VSS_body.efi
+		
+В последних билдах Windows 10 есть встроенные инструменты работы с nvram, но в моей версии возможности нет.		
+
+Посему - буду считать offsetы и патчить))
+		
+
+
+## ACPI таблицы, содержащие DSDT, Freeform PlatformAcpiTable
+
+Интересные мне [ACPI tables](acpi_in_BIOS.md) в дампе хранятся как Freeform c GUID 7E374E25-8E01-4FEE-87F2-390C23C606CD. Нет, UEFIExtract не извлекает, сохраняю вручную как 7E374E25_PlatformAcpiTable.handle_extracted.bin
+
+И .efi формирую копированием.
+
+		@echo -------------------------------------------------------
+		@echo Freeform_PlatformAcpiTablefreeform
+		:: 7E374E25-8E01-4FEE-87F2-390C23C606CD
+		:: "../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 7E374E25-8E01-4FEE-87F2-390C23C606CD -o efi -m body -t 10
+		:: mv -f ./efi/body.bin .
+		cp -f 7E374E25_PlatformAcpiTable.handle_extracted.bin 7E374E25_PlatformAcpiTable.efi
+
+
+
+## Итоги
+
+Коммандный файл, создав .efi файлы, в конце своей работы закидывает их скопом в папку ./work/patches для [дальнейшей работы](edit_bios_dump.md) с ними.
+
+		mv -f ./*.efi ./patches
+
