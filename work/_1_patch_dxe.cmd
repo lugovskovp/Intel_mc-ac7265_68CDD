@@ -43,7 +43,7 @@
 @rm -f ./patches/*.hex
 
 ::moving result to folder build
-@v -f ./patches/rsa/*.new ./build
+@mv -f ./patches/rsa/*.new ./build
 
 
 
