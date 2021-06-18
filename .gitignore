@@ -2,6 +2,9 @@
 *68CDD_flash_dump.bin
 hp_bios*.bin
 
+#building drafts
+/work/patches/wl/*
+
 # temp user files result
 ---*/*
 ___*/*
