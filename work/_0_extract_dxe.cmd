@@ -55,7 +55,7 @@ rm -f -r ./efi
 :: RCA check module
 "../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin E64E8AEE-0C78-4D9D-86A9-40C97845A3D4 -o efi -m body -t 10
 mv -f ./efi/body.bin .
-ren body.bin E64E8AEE-RCAchecker.efi
+ren body.bin E64E8AEE-RSAchecker.efi
 rm -f -r ./efi
 
 

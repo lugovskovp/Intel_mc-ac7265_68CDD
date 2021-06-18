@@ -2,8 +2,11 @@
 *68CDD_flash_dump.bin
 hp_bios*.bin
 
-#building drafts
+#building and drafts
+/work/build/*
 /work/patches/wl/*
+/work/patches/rsa/*
+/work/patches/vss/*
 
 # temp user files result
 ---*/*
