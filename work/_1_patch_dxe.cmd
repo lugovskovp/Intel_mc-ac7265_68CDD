@@ -1,5 +1,8 @@
 :: ----------------------------------------------------------
 :: 1. Patching whitelists in 4 modules
+@cd ./patches
+@mkdir wl
+@cd ..
 
 ::		Hex pattern "8680394286801113" found as "8680394286801113" in EfiCrc32GuidedSectionExtractionGuid/PE32 image section at header-offset AC4h
 @call sub_1_1_do_patch.cmd 0ac0 F6D35FBB-WLAN
