@@ -1,12 +1,15 @@
-# Извлечение модулей, , /work/_0_extract_dxe.cmd
+# Извлечение модулей, /work/_0_extract_dxe.cmd
 
 Слитый программатором [в предыдущей части](get_bios_dump.md) дамп биоса **hp_bios_original.bin** копирую под именем **hp_bios.bin** в папку **./work**. Из-за сочетания природной лени с природной же настойчивостью, цель - создать command файл, запуском которого извлекаются/создаются все необходимые файлы модулей: **/work/_0_extract_dxe.cmd**
 
 
-
+## TOC
 - [Used SW](#used-sw)
-- [Подмена в BIOS одного из VEN_DEV_SUBSYS в whitelist модулей.](#%D0%BF%D0%BE%D0%B4%D0%BC%D0%B5%D0%BD%D0%B0-%D0%B2-bios-%D0%BE%D0%B4%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D0%B7-ven_dev_subsys-%D0%B2-whitelist-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D0%B5%D0%B9)
-
+- [Извлечение UEFI модулей, содержащих Whitelist WiFi](#%D0%B8%D0%B7%D0%B2%D0%BB%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-uefi-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D0%B5%D0%B9-%D1%81%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%89%D0%B8%D1%85-whitelist-wifi)
+ -[UEFI модуль с проверкой контрольной суммы BI](#uefi-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8C-%D1%81-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%BE%D0%B9-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D1%83%D0%BC%D0%BC%D1%8B-bios)
+- []()
+- []()
+ 
 
 ## Used SW
 - Утилита UEFIExtract.exe из пакета [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58).
@@ -34,7 +37,6 @@
 
 Интерфейс UEFITool хорош: даблклик на результат поиска синхронизирует главное окно, переводя к необходимому модулю.
 
-![результат поиска](/pix/2021-03-09_13.06.03.png)
 
 	FileSystem GUID: 7A9354D9-0468-444A-81CE-0BF617D890DF (DXE том)
 		|- File GUID: 4A538818-5AE0-4EB2-B2EB-488B23657022 - FvMainCompact
@@ -49,7 +51,7 @@
 		|-	File GUID: 233DF097-3218-47B2-9E09-FE58C2B20D22 - PlatfirmStage2
 	
 
-Сохраняю "Extract body" модуля WLAN
+Сохраняю "Extract body" тело модуля WLAN
 
 ![2021-06-18_11-51-39.png](pix/2021-06-18_11-51-39.png)
 
@@ -66,7 +68,7 @@
 		@ren body.bin 5EE86B35-WLAN.efi
 		@rm -f -r ./efi
 
-UEFIExtract (да, он находится "выше" корня git) ищет в hp_bios.bin файл с GUID 5EE86B35-0839-4A21-8845-F1ACB0F688AB, извлекает его тело (-m body) типа 10h (полный перечень возможных значений см UEFIExtract --help) в создаваемую директорию ./efi/ с именем body.bin. Если efi существует - Error 34.
+UEFIExtract (да, он находится "выше" корня git) ищет в hp_bios.bin файл с GUID 5EE86B35-0839-4A21-8845-F1ACB0F688AB, извлекает его тело (-m body) типа 10h (полный перечень возможных значений см UEFIExtract --help) в создаваемую директорию ./efi/ с именем body.bin. Если folder efi существует будет Error 34.
 Переименовываю в 5EE86B35-WLAN.efi, перемещаю в ./work.
 
 Аналогично - 53984C6A-PlatformStage1.efi и 233DF097-PlatformStage2.efi.
