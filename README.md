@@ -44,15 +44,17 @@
 
 - [Получить дамп BIOS](get_bios_dump.md)
 - [Формат Whitelist WiFi HP](whitelist_hp6540b.md)
-- [How to hack BIOS RSA checker]()
-- [VSS variables and USB ports]()
-- []()
+- [How to hack BIOS RSA checker](hack_rsa.md)
+- [USB ports and VSS variables]()
+- [ACPI tables](acpi_in_BIOS.md)
+
 - [Пакетное извлечение из дампа модулей, /work/_0_extract_dxe.cmd](save_bios_modules.md)
 - [Пакетное редактирование модулей, /work/_1_patch_dxe.cmd](edit_bios_dump.md)
+
 - [Собрать новый образ отредактированного биос из модулей]()
 - [Залить BIOS]()
 
-
+[Сборка содержимого UEFI flash и прошивка](build_bios_dump.md)
 
 ## Литература, ссылки и ПО.
 
