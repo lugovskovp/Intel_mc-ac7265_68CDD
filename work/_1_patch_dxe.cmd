@@ -5,7 +5,7 @@
 @cd ..
 
 ::		Hex pattern "8680394286801113" found as "8680394286801113" in EfiCrc32GuidedSectionExtractionGuid/PE32 image section at header-offset AC4h
-@call sub_1_1_wl_patch.cmd 0ac0 F6D35FBB-WLAN
+@call sub_1_1_wl_patch.cmd 0ac0 5EE86B35-WLAN
 
 ::		Hex pattern "8680394286801113" found as "8680394286801113" in EfiCrc32GuidedSectionExtractionGuid/PE32 image section at header-offset 7AD4h
 @call sub_1_1_wl_patch.cmd 07ad0 F6D35FBB-PlatformSetup

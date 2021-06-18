@@ -15,8 +15,25 @@ rm -f  ./*.efi
 @echo WLAN
 "../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 5EE86B35-0839-4A21-8845-F1ACB0F688AB -o efi -m body -t 10
 @mv -f ./efi/body.bin .
-@ren body.bin F6D35FBB-WLAN.efi
+@ren body.bin 5EE86B35-WLAN.efi
 @rm -f -r ./efi
+
+@echo -------------------------------------------------------
+@echo PlatformStage1
+::  53984C6A-1B4A-4174-9512-A65E5BC8B278  -- PlatformStage1
+"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 53984C6A-1B4A-4174-9512-A65E5BC8B278 -o efi -m body -t 10
+mv -f ./efi/body.bin .
+ren body.bin 53984C6A-PlatformStage1.efi
+rm -f -r ./efi
+
+@echo -------------------------------------------------------
+@echo PlatformStage2
+::  53984C6A-1B4A-4174-9512-A65E5BC8B278  -- PlatformStage1
+"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 233DF097-3218-47B2-9E09-FE58C2B20D22 -o efi -m body -t 10
+mv -f ./efi/body.bin .
+ren body.bin 233DF097-PlatformStage2.efi
+rm -f -r ./efi
+
 
 @echo -------------------------------------------------------
 @echo PlatformSetup
@@ -32,22 +49,9 @@ rm -f  ./*.efi
 :::::: and i made F6D35FBB-PlatformSetup.handle_extracted saved from from UefiTool
 cp -f F6D35FBB-PlatformSetup.handle_extracted.bin F6D35FBB-PlatformSetup.efi
 
-@echo -------------------------------------------------------
-@echo PlatformStage1
-::  53984C6A-1B4A-4174-9512-A65E5BC8B278  -- PlatformStage1
-::
-"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 53984C6A-1B4A-4174-9512-A65E5BC8B278 -o efi -m body -t 10
-mv -f ./efi/body.bin .
-ren body.bin 53984C6A-PlatformStage1.efi
-rm -f -r ./efi
-@echo -------------------------------------------------------
-@echo PlatformStage2
-::  53984C6A-1B4A-4174-9512-A65E5BC8B278  -- PlatformStage1
-::
-"../../_Utils/UEFITool A58/UEFIExtract.exe" hp_bios.bin 233DF097-3218-47B2-9E09-FE58C2B20D22 -o efi -m body -t 10
-mv -f ./efi/body.bin .
-ren body.bin 233DF097-PlatformStage2.efi
-rm -f -r ./efi
+
+
+
 
 
 @echo -------------------------------------------------------
