@@ -8,7 +8,7 @@
 
 - [Mobile Intel® HM57 Express](doc/HW/5-chipset-3400-chipset-datasheet.pdf)
 - Intel Core i5 M520
-- ATI Mobility Radeon HD 4500. Да, не для игр, старенькая, слабенькая, но пройти Subnautica получилось. 
+- ATI Mobility Radeon HD 4500. Да, не для игр, старенькая, слабенькая, но как-то Subnautic-у удалось пройти. 
 - SSD
 - RAM 8GB. Это максимум, увы. С докерами не поработаешь.
 - COM port. И это здорово.
@@ -22,11 +22,11 @@
 
 ### Intel® Dual Band Wireless AC 7265 
 
-- Wi-Fi standard 802.11ac 2x2 
-- Wi-Fi TX/RX chains 2x2 chains 
-- Supported Bands 2.4 GHz, 5 GHz 
-- Wi-Fi TX/RX Throughput 867 Mbps 
-- Bluetooth Core Bluetooth 4.0 
+- Wi-Fi standard: 802.11ac 2x2 
+- Wi-Fi TX/RX chains: 2x2 chains 
+- Supported Bands: 2.4 GHz, 5 GHz 
+- Wi-Fi TX/RX Throughput: 867 Mbps 
+- Bluetooth Core: Bluetooth 4.0 
 - [External Product Specification](doc/HW/7265NGW-UserMan-2421860.pdf)
 
 
@@ -60,6 +60,8 @@
 - [Залить BIOS]()
 
 [Сборка содержимого UEFI flash и прошивка](build_bios_dump.md)
+
+
 
 ## Литература, ссылки и ПО.
 
