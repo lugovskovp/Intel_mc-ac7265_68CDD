@@ -41,7 +41,7 @@ v.0.28
 ## Used SW
 
 - Утилиты xxd и diff, устанавливающиеся вместе с [git for windows](https://git-scm.com/downloads)
-
+- HxD
 
 
 ## Подмена в BIOS одного из VEN_DEV_SUBSYS в whitelist

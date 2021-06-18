@@ -30,11 +30,15 @@
 - [External Product Specification](doc/HW/7265NGW-UserMan-2421860.pdf)
 
 
-## Список задач и план работы
+## План работ
 
-- Изменить BIOS ноутбука для обеспечения работы WiFi ac7265.
-- Упд: обеспечить работоспособность BlueToot 4.0 части модуля ac7265 
-- Упд: обеспечить работоспособность WLAN 3g модуля, установленного, но не использовавшегося после перехода с win7
+| Задача | Выполнено          |
+| ------- | ------------------ |
+| Изменить BIOS ноутбука для обеспечения работы WiFi ac7265.  | :x: |
+| Обеспечить работоспособность BlueToot 4.0 части модуля ac726  | :white_check_mark:                |
+| Обеспечить обеспечить работоспособность WLAN 3g модуля, установленного, но не использовавшегося после перехода с win7 | :white_check_mark: |
+
+
 
 
 ## Последовательность действий:
@@ -45,7 +49,8 @@
 - [Получить дамп BIOS](get_bios_dump.md)
 - [Формат Whitelist WiFi HP](whitelist_hp6540b.md)
 - [How to hack BIOS RSA checker](hack_rsa.md)
-- [USB ports and VSS variables]()
+- [USB ports]()
+- [VSS variables](VSS_variables.md)
 - [ACPI tables](acpi_in_BIOS.md)
 
 - [Пакетное извлечение из дампа модулей, /work/_0_extract_dxe.cmd](save_bios_modules.md)
@@ -60,7 +65,6 @@
 
 ### Software
 
-- Порт git for windows
 - [UEFI Tool NE alpha 58](https://github.com/LongSoft/UEFITool/releases/tag/A58)
 - UefiTool v028
 - [Total commander](https://www.ghisler.com/)

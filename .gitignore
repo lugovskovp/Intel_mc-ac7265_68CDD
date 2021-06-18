@@ -7,6 +7,7 @@ hp_bios*.bin
 /work/patches/wl/*
 /work/patches/rsa/*
 /work/patches/vss/*
+*/tmp/*
 
 # temp user files result
 ---*/*
